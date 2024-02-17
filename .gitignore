@@ -2,13 +2,13 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
-/cs3540-final/Library/
-/cs3540-final/Temp/
-/[Oo]bj/
-/[Bb]uild/
-/[Bb]uilds/
-/cs3540-final/Logs/
-/cs3540-final/UserSettings/
+Library/
+Temp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+Logs/
+UserSettings/
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
