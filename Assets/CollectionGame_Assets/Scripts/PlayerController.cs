@@ -4,20 +4,25 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float SPEED = 5f;
+    public float playerSpeed = 5f;
     public float JUMP_FORCE = 50;
-    bool canShoot = false;
+
+    public float bulletSpeed = 20f;
+
+    public float bulletCooldown = 0.1f;
+
+    float bulletRefresh;
 
     Rigidbody rb;
     AudioSource jumpSound;
     Ray cameraRay;
     Plane groundPlane;
-    GameObject bullet;
+    public GameObject bullet;
 
     // Start is called before the first frame update
     void Start()
     {
-        bullet = GameObject.Find("Bullet");
+        bulletRefresh = 0;
         rb = GetComponent<Rigidbody>();
         jumpSound = GetComponent<AudioSource>();
         groundPlane = new Plane(Vector3.up, Vector3.zero);
@@ -28,11 +33,11 @@ public class PlayerController : MonoBehaviour
     {
         RotateWithMouse();
 
-        // if the player presses N then they will shoot a bullet from the player to the direction they are facing
-        // bullet is Kinematic so it will not be affected by gravity
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            canShoot = true;
+        if (bulletRefresh <= 0) {
+            Shoot();
+        }
+        else {
+            bulletRefresh -= Time.deltaTime;
         }
     }
 
@@ -50,9 +55,9 @@ public class PlayerController : MonoBehaviour
         //Debug.Log("foreVector: " + foreVector);
 
 
-        //rb.AddForce(foreVector * SPEED);
+        //rb.AddForce(foreVector * playerSpeed);
 
-        rb.transform.position = rb.transform.position + foreVector * SPEED * Time.deltaTime;
+        rb.transform.position = rb.transform.position + foreVector * playerSpeed * Time.deltaTime;
 
         // rotate in the forward direction
         // transform.rotation = Quaternion.LookRotation(foreVector);
@@ -70,15 +75,11 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            SPEED = 10f;
+            playerSpeed = 10f;
         }
         else
         {
-            SPEED = 5f;
-        }
-
-        if (canShoot) {
-            ShootToMouseDirection();
+            playerSpeed = 5f;
         }
     }
 
@@ -95,23 +96,34 @@ public class PlayerController : MonoBehaviour
     }
 
     // shoots a bullet clone from the player to the direction of the mouse pointer
-    // bullet is Kinematic so it will not be affected by gravity
-    void ShootToMouseDirection() {
-        GameObject bulletClone = Instantiate(bullet, transform.position, transform.rotation);
+    //now physics-based, without gravity
+    void Shoot() {
+        if (Input.GetKey(KeyCode.N))
+        {
+            FireBullet();
+            bulletRefresh = bulletCooldown;
+        }
+    }
 
-        Vector3 bulletDirection = cameraRay.direction;
-        bulletDirection.y = 0;
-        bulletClone.transform.position = transform.position;
-        bulletClone.GetComponent<Rigidbody>().velocity = bulletDirection * 1000;
+    //fires a singular bullet
+    void FireBullet() {
+        GameObject bulletClone = Instantiate(bullet, transform.position + transform.forward, transform.rotation) as GameObject;
 
-        Debug.Log("bulletDirection: " + bulletDirection);
-        Destroy(bulletClone, 2);
+        Rigidbody rb = bulletClone.GetComponent<Rigidbody>();
+
+        rb.AddForce(transform.forward * bulletSpeed, ForceMode.VelocityChange);
+
+        bulletClone.transform.SetParent(
+            GameObject.FindGameObjectWithTag("BulletParent").transform
+        );
+
     }
 
     // shoots a bullet clone from the player to the direction of the player is facing
+    /*
     void Shoot() {
         bullet.transform.position = transform.position;
         bullet.GetComponent<Rigidbody>().velocity = transform.forward * 10;
-        canShoot = false;
     }
+    */
 }
