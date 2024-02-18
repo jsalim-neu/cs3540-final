@@ -1234,7 +1234,7 @@ MonoBehaviour:
   playerSpeed: 5
   JUMP_FORCE: 5
   bulletSpeed: 10
-  bulletCooldown: 0.15
+  bulletCooldown: 0.2
   bullet: {fileID: 4031836183731681380, guid: 7b943f735f370480c9ea10968d7e5a43, type: 3}
 --- !u!82 &934898994
 AudioSource:
