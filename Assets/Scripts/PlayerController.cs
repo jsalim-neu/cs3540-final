@@ -43,45 +43,38 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (LevelManager.isGameOver) {
-            //rb.velocity = Vector3.zero;
-            // rb.angularVelocity = Vector3.zero;
-            return;
-        }
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
+        if (!LevelManager.isGameOver) {
+            float moveHorizontal = Input.GetAxis("Horizontal");
+            float moveVertical = Input.GetAxis("Vertical");
 
-        Vector3 foreVector = new Vector3(moveHorizontal, 0.0f, moveVertical).normalized;
-        //Debug.Log("foreVector: " + foreVector);
+            Vector3 foreVector = new Vector3(moveHorizontal, 0.0f, moveVertical).normalized;
+            //Debug.Log("foreVector: " + foreVector);
 
 
-        //rb.AddForce(foreVector * playerSpeed);
+            //rb.AddForce(foreVector * playerSpeed);
 
-        rb.transform.position = rb.transform.position + foreVector * playerSpeed * Time.deltaTime;
+            rb.transform.position = rb.transform.position + foreVector * playerSpeed * Time.deltaTime;
 
-        // rotate in the forward direction
-        // transform.rotation = Quaternion.LookRotation(foreVector);
+            // rotate in the forward direction
+            // transform.rotation = Quaternion.LookRotation(foreVector);
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-
-            if (rb.velocity.y < 0.1f && rb.velocity.y > -0.1f)
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
-                rb.transform.position = rb.transform.position + Vector3.up * JUMP_FORCE * Time.deltaTime;
-                //rb.AddForce(Vector3.up * JUMP_FORCE, ForceMode.Impulse);
+                Jump();
+            }
+
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                playerSpeed = 10f;
+            }
+            else
+            {
+                playerSpeed = 5f;
             }
         }
-
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            playerSpeed = 10f;
-        }
-        else
-        {
-            playerSpeed = 5f;
-        }
     }
+
+    
 
     void RotateWithMouse() {
         cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -117,8 +110,19 @@ public class PlayerController : MonoBehaviour
             GameObject.FindGameObjectWithTag("BulletParent").transform
         );
 
+        Destroy(bulletClone, 2f);
+
     }
 
+    private void Jump()
+    {
+        if (rb.velocity.y < 0.1f && rb.velocity.y > -0.1f)
+        {
+            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+            rb.transform.position = rb.transform.position + Vector3.up * JUMP_FORCE * Time.deltaTime;
+            //rb.AddForce(Vector3.up * JUMP_FORCE, ForceMode.Impulse);
+        }
+    }
     // shoots a bullet clone from the player to the direction of the player is facing
     /*
     void Shoot() {
