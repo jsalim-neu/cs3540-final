@@ -6,6 +6,8 @@ TagManager:
   tags:
   - PickUp
   - Enemy
+  - DebrisService
+  - BulletDebris
   layers:
   - Default
   - TransparentFX

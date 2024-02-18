@@ -359,7 +359,9 @@
 "Assets/CollectionGame_Assets/Scripts/PlayerBehavior.cs"
 "Assets/CollectionGame_Assets/Scripts/PlayerController.cs"
 "Assets/CollectionGame_Assets/Scripts/RotateObject.cs"
-"Assets/LevelManager.cs"
+"Assets/CollectionGame_Assets/Scripts/WeaponController.cs"
+"Assets/Scripts/BulletBehaviour.cs"
+"Assets/Scripts/LevelManager.cs"
 -langversion:9.0
 
 /deterministic

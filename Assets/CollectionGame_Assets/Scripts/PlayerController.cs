@@ -4,11 +4,19 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float SPEED = 5f;
-    public float JUMP_FORCE = 50;
-    bool canShoot = false;
 
-    Rigidbody rb;
+    CharacterController controller;
+    public float speed = 8f;
+    public float jumpHeight = 10f;
+    public float gravity = 9.81f;
+    public float airControl = 10f;
+    bool canShoot = false;
+    public float cameraDistance = 10f;
+
+    WeaponController weapon;
+
+    Vector3 input, moveDirection;
+
     AudioSource jumpSound;
     Ray cameraRay;
     Plane groundPlane;
@@ -17,8 +25,9 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        weapon = GetComponent<WeaponController>();
+        controller = GetComponent<CharacterController>();
         bullet = GameObject.Find("Bullet");
-        rb = GetComponent<Rigidbody>();
         jumpSound = GetComponent<AudioSource>();
         groundPlane = new Plane(Vector3.up, Vector3.zero);
     }
@@ -26,61 +35,45 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        RotateWithMouse();
-
-        // if the player presses N then they will shoot a bullet from the player to the direction they are facing
-        // bullet is Kinematic so it will not be affected by gravity
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            canShoot = true;
-        }
-    }
-
-    void FixedUpdate()
-    {
-        if (LevelManager.isGameOver) {
-            //rb.velocity = Vector3.zero;
-            // rb.angularVelocity = Vector3.zero;
-            return;
-        }
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
 
-        Vector3 foreVector = new Vector3(moveHorizontal, 0.0f, moveVertical);
-        //Debug.Log("foreVector: " + foreVector);
+        input = (transform.right * moveHorizontal + transform.forward * moveVertical).normalized;
+        input *= speed;
 
-
-        //rb.AddForce(foreVector * SPEED);
-
-        rb.transform.position = rb.transform.position + foreVector * SPEED * Time.deltaTime;
-
-        // rotate in the forward direction
-        // transform.rotation = Quaternion.LookRotation(foreVector);
-
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (controller.isGrounded)
         {
-
-            if (rb.velocity.y < 0.1f && rb.velocity.y > -0.1f)
-            {
-                rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
-                rb.transform.position = rb.transform.position + Vector3.up * JUMP_FORCE * Time.deltaTime;
-                //rb.AddForce(Vector3.up * JUMP_FORCE, ForceMode.Impulse);
-            }
-        }
-
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            SPEED = 10f;
+            moveDirection = input;
         }
         else
         {
-            SPEED = 5f;
+            input.y = moveDirection.y;
+            moveDirection = Vector3.Lerp(moveDirection, input, airControl * Time.deltaTime);
         }
 
-        if (canShoot) {
-            ShootToMouseDirection();
-        }
+        moveDirection.y -= gravity * Time.deltaTime;
+        controller.Move(moveDirection * Time.deltaTime);
     }
+
+    // fixed update
+    void FixedUpdate()
+    {
+        /*
+        if (Input.GetButtonDown("Jump") && controller.isGrounded)
+        {
+            moveDirection.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            jumpSound.Play();
+        }
+        */
+
+        if (Input.GetButton("Fire1"))
+        {
+            weapon.Fire();
+        }
+
+        RotateWithMouse();
+    }   
+
 
     void RotateWithMouse() {
         cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -113,5 +106,13 @@ public class PlayerController : MonoBehaviour
         bullet.transform.position = transform.position;
         bullet.GetComponent<Rigidbody>().velocity = transform.forward * 10;
         canShoot = false;
+    }
+
+    // keep camera looking at player from top-down view
+    void LateUpdate()
+    {
+        Vector3 newPos = new Vector3(transform.position.x, transform.position.y + cameraDistance, transform.position.z);
+        Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, newPos, 0.9f);
+        //Camera.main.transform.LookAt(transform);
     }
 }
