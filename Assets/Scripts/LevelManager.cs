@@ -11,13 +11,14 @@ public class LevelManager : MonoBehaviour
     public static bool isGameOver = false;
     public static int pickUpCount;
 
-    public Text timerText;
-    public Text gameText;
-
+    public Text timerText, gameText, scoreText;
     public AudioClip gameOverSFX;
     public AudioClip gameWonSFX;
 
     public string nextLevel;
+
+    public static float score = 0;
+
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +26,7 @@ public class LevelManager : MonoBehaviour
         isGameOver = false;
         pickUpCount = GameObject.FindGameObjectsWithTag("PickUp").Length;
         countDown = levelDuration;
+        //gameText.gameObject.SetActive(false);
         SetTimerText();
     }
 
@@ -51,12 +53,18 @@ public class LevelManager : MonoBehaviour
             }
 
             SetTimerText();
+            SetScoreText();
         }
     }
 
     void SetTimerText()
     {
         timerText.text = countDown.ToString("f2");
+    }
+
+    void SetScoreText()
+    {
+        scoreText.text = "$" + score.ToString();
     }
 
     public void LevelLost()
