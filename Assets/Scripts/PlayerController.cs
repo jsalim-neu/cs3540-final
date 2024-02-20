@@ -91,7 +91,7 @@ public class PlayerController : MonoBehaviour
     // shoots a bullet clone from the player to the direction of the mouse pointer
     //now physics-based, without gravity
     void Shoot() {
-        if (Input.GetKey(KeyCode.N))
+        if (Input.GetMouseButton(0))
         {
             FireBullet();
             bulletRefresh = bulletCooldown;
@@ -100,7 +100,9 @@ public class PlayerController : MonoBehaviour
 
     //fires a singular bullet
     void FireBullet() {
-        GameObject bulletClone = Instantiate(bullet, transform.position + transform.forward, transform.rotation) as GameObject;
+        Vector3 offset = new Vector3(0.1f, 0, 0.1f);
+
+        GameObject bulletClone = Instantiate(bullet, transform.position + transform.forward + offset, transform.rotation) as GameObject;
 
         Rigidbody rb = bulletClone.GetComponent<Rigidbody>();
 

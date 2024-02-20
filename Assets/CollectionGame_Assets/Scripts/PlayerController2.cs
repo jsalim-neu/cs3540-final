@@ -22,7 +22,8 @@ public class PlayerController2 : MonoBehaviour
     AudioSource jumpSound;
     Ray cameraRay;
     Plane groundPlane;
-    GameObject bullet;
+    GameObject bullet, bulletParent;
+
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +31,8 @@ public class PlayerController2 : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         weapon = GetComponent<WeaponController>();
         // controller = GetComponent<CharacterController>();
-        bullet = GameObject.Find("Bullet");
+        bullet = GameObject.FindGameObjectWithTag("Bullet");
+        bulletParent = GameObject.FindWithTag("BulletParent");
         jumpSound = GetComponent<AudioSource>();
         groundPlane = new Plane(Vector3.up, Vector3.zero);
     }
@@ -117,7 +119,7 @@ public class PlayerController2 : MonoBehaviour
     // keep camera looking at player from top-down view
     void LateUpdate()
     {
-        Vector3 newPos = new Vector3(transform.position.x, transform.position.y + cameraDistance, transform.position.z);
+        Vector3 newPos = new Vector3(transform.position.x, transform.position.y + cameraDistance, transform.position.z - 2f);
         Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, newPos, 0.9f);
         //Camera.main.transform.LookAt(transform);
     }

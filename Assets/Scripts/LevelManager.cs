@@ -9,9 +9,10 @@ public class LevelManager : MonoBehaviour
     public float levelDuration = 10f;
     float countDown;
     public static bool isGameOver = false;
-    public static int pickUpCount;
 
-    public Text timerText, gameText, scoreText;
+    public Text timerText, scoreText, gameText;
+
+    public Image messagePanel;
     public AudioClip gameOverSFX;
     public AudioClip gameWonSFX;
 
@@ -24,10 +25,12 @@ public class LevelManager : MonoBehaviour
     void Start()
     {
         isGameOver = false;
-        pickUpCount = GameObject.FindGameObjectsWithTag("PickUp").Length;
         countDown = levelDuration;
         //gameText.gameObject.SetActive(false);
         SetTimerText();
+        messagePanel.gameObject.SetActive(true);
+        gameText.text = "Objective: Collect $10.";
+        messagePanel.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -35,14 +38,11 @@ public class LevelManager : MonoBehaviour
     {
         if (!isGameOver)
         {
-            pickUpCount = GameObject.FindGameObjectsWithTag("PickUp").Length;
-
-            /*
-            if (pickUpCount <= 0)
+            
+            if (score >= 10)
             {
-                isGameOver = true;
+                LevelBeat();
             }
-            */
 
             if (countDown > 0)
             {
@@ -73,7 +73,7 @@ public class LevelManager : MonoBehaviour
     {
         isGameOver = true;
         gameText.text = "You Lost!";
-        gameText.gameObject.SetActive(true);
+        messagePanel.gameObject.SetActive(true);
 
         if (gameOverSFX != null) {
             Camera.main.GetComponent<AudioSource>().pitch = 1;
@@ -87,7 +87,7 @@ public class LevelManager : MonoBehaviour
     {
         isGameOver = true;
         gameText.text = "You Won!";
-        gameText.gameObject.SetActive(true);
+        messagePanel.gameObject.SetActive(true);
     
         if (gameWonSFX != null) {
             Camera.main.GetComponent<AudioSource>().pitch = 2;
