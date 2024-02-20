@@ -38,32 +38,32 @@ public class PlayerController2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
-
-        Debug.Log("moveHorizontal: " + moveHorizontal);
-        Debug.Log("moveVertical: " + moveVertical);
-
-        // if moveHorizontal is positive, increase the player's z-position
-        // if moveHorizontal is negative, decrease the player's z-position
-        // if moveVertical is positive, increase the player's x-position
-        // if moveVertical is negative, decrease the player's x-position
-
-        if (moveHorizontal != 0 || moveVertical != 0)
-        {
-            // transform.position += new Vector3(moveHorizontal, 0, moveVertical) * speed * Time.deltaTime;
-            rb.velocity = new Vector3(moveHorizontal, 0, moveVertical) * speed;
-        }
-        else
-        {
-            rb.velocity = Vector3.zero;
-        }
-        transform.position += new Vector3(moveHorizontal, 0, moveVertical) * speed * Time.deltaTime;
+        //
     }
 
     // fixed update
     void FixedUpdate()
     {
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        float moveVertical = Input.GetAxis("Vertical");
+
+        Vector3 foreVector = new Vector3(moveHorizontal, 0.0f, moveVertical).normalized;
+        //Debug.Log("foreVector: " + foreVector);
+
+
+        //rb.AddForce(foreVector * playerSpeed);
+        if (moveHorizontal == 0 && moveVertical == 0)
+        {
+            // we dont want the player's x or z coordinates to change if the player is not moving.
+            // WE MUST NOT SET THE RIGIDBODY TO KINEMATIC, OTHERWISE THE PLAYER WILL NOT BE AFFECTED BY GRAVITY
+            rb.velocity = new Vector3(0, rb.velocity.y, 0);
+        }
+        else
+        {
+            rb.isKinematic = false;
+            rb.transform.position = rb.transform.position + foreVector * speed * Time.deltaTime;
+        }
+        
         /*
         if (Input.GetButtonDown("Jump") && controller.isGrounded)
         {
