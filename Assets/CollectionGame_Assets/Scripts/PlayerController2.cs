@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController2 : MonoBehaviour
 {
 
-    CharacterController controller;
+    //CharacterController controller;
     public float speed = 8f;
     public float jumpHeight = 10f;
     public float gravity = 9.81f;
@@ -17,6 +17,8 @@ public class PlayerController2 : MonoBehaviour
 
     Vector3 input, moveDirection;
 
+    Rigidbody rb;
+
     AudioSource jumpSound;
     Ray cameraRay;
     Plane groundPlane;
@@ -25,8 +27,9 @@ public class PlayerController2 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        rb = GetComponent<Rigidbody>();
         weapon = GetComponent<WeaponController>();
-        controller = GetComponent<CharacterController>();
+        // controller = GetComponent<CharacterController>();
         bullet = GameObject.Find("Bullet");
         jumpSound = GetComponent<AudioSource>();
         groundPlane = new Plane(Vector3.up, Vector3.zero);
@@ -38,21 +41,24 @@ public class PlayerController2 : MonoBehaviour
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
 
-        input = (transform.right * moveHorizontal + transform.forward * moveVertical).normalized;
-        input *= speed;
+        Debug.Log("moveHorizontal: " + moveHorizontal);
+        Debug.Log("moveVertical: " + moveVertical);
 
-        if (controller.isGrounded)
+        // if moveHorizontal is positive, increase the player's z-position
+        // if moveHorizontal is negative, decrease the player's z-position
+        // if moveVertical is positive, increase the player's x-position
+        // if moveVertical is negative, decrease the player's x-position
+
+        if (moveHorizontal != 0 || moveVertical != 0)
         {
-            moveDirection = input;
+            // transform.position += new Vector3(moveHorizontal, 0, moveVertical) * speed * Time.deltaTime;
+            rb.velocity = new Vector3(moveHorizontal, 0, moveVertical) * speed;
         }
         else
         {
-            input.y = moveDirection.y;
-            moveDirection = Vector3.Lerp(moveDirection, input, airControl * Time.deltaTime);
+            rb.velocity = Vector3.zero;
         }
-
-        moveDirection.y -= gravity * Time.deltaTime;
-        controller.Move(moveDirection * Time.deltaTime);
+        transform.position += new Vector3(moveHorizontal, 0, moveVertical) * speed * Time.deltaTime;
     }
 
     // fixed update
