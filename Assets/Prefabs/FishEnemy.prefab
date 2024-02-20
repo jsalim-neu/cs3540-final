@@ -124,9 +124,11 @@ MonoBehaviour:
   moveSpeed: 5
   hurtSFX: {fileID: 8300000, guid: eec961d9965b09c468aa1b0cdaa1bce5, type: 3}
   deathSFX: {fileID: 8300000, guid: 13f83433eb9630049a1dcb60b9ac08e8, type: 3}
-  itemDrop: {fileID: 3129200342344496425, guid: 3e29573f06c0a7e4fa986fff41de17af, type: 3}
   detectionRadius: 10
   maxHealth: 3
+  itemDrop: {fileID: 3129200342344496425, guid: 3e29573f06c0a7e4fa986fff41de17af, type: 3}
+  itemParent: {fileID: 0}
+  dropChance: 1
 --- !u!95 &741178466077394306
 Animator:
   serializedVersion: 5

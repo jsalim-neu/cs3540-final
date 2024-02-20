@@ -82,6 +82,8 @@ public class FishEnemyBehavior : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Bullet"))
         {
+            //if not aggro already, makes sure it begins to follow the player
+            isAggro = true;
 
 
             StartCoroutine(GetHit(other));
@@ -107,7 +109,11 @@ public class FishEnemyBehavior : MonoBehaviour
         if (currentHealth <= 0) {
             Die();
         }
-        yield return new WaitForSeconds(1/6f);
+        else {
+            //play hit animation
+            gameObject.GetComponent<Animator>().SetTrigger("fishHit");
+        }
+        yield return new WaitForSeconds(0.25f);
         isGettingHit = false;
 
     }
