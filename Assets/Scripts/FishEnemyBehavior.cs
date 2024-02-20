@@ -4,17 +4,26 @@ using UnityEngine;
 
 public class FishEnemyBehavior : MonoBehaviour
 {
+
+    //movement, player detection vars
     public Transform player;
     public float moveSpeed = 5f;
     public AudioClip hurtSFX, deathSFX;
 
     public float detectionRadius = 10f;
 
-    bool isAggro, isDead;
+    // health/state handler vars
+
+    bool isAggro, isDead, isGettingHit;
 
     public float maxHealth = 3f;
 
     float currentHealth;
+
+    // item drop vars
+
+    public GameObject itemDrop, itemParent;
+    public float dropChance = 1f;
 
     void Start()
     {
@@ -24,6 +33,7 @@ public class FishEnemyBehavior : MonoBehaviour
         }
         isAggro = false;
         isDead = false;
+        isGettingHit = false;
 
         currentHealth = maxHealth;
     }
@@ -39,7 +49,7 @@ public class FishEnemyBehavior : MonoBehaviour
             }
 
             //if enemy is activated, follow player
-            if (isAggro) {
+            if (isAggro && !isGettingHit) {
                 FollowPlayer();
             }
 
@@ -72,21 +82,40 @@ public class FishEnemyBehavior : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Bullet"))
         {
-            //get hurt
-            AudioSource.PlayClipAtPoint(
-                hurtSFX,
-                Camera.main.transform.position
-            );
-            currentHealth -= 1;
+            //if not aggro already, makes sure it begins to follow the player
+            isAggro = true;
 
-            //destroy bullet
-            Destroy(other.gameObject);
-            
-            //check whether enemy dies
-            if (currentHealth <= 0) {
-                Die();
-            }
+
+            StartCoroutine(GetHit(other));
+
+
         }
+    }
+
+    private IEnumerator GetHit(Collision other)
+    {
+        //get hurt
+        isGettingHit = true;
+        AudioSource.PlayClipAtPoint(
+            hurtSFX,
+            Camera.main.transform.position
+        );
+        currentHealth -= 1;
+
+        //destroy bullet
+        Destroy(other.gameObject);
+        
+        //check whether enemy dies
+        if (currentHealth <= 0) {
+            Die();
+        }
+        else {
+            //play hit animation
+            gameObject.GetComponent<Animator>().SetTrigger("fishHit");
+        }
+        yield return new WaitForSeconds(0.25f);
+        isGettingHit = false;
+
     }
 
     private void Die()
@@ -95,11 +124,25 @@ public class FishEnemyBehavior : MonoBehaviour
         isDead = true;
         GetComponent<MeshCollider>().enabled = false;
         AudioSource.PlayClipAtPoint(
-            hurtSFX,
+            deathSFX,
             Camera.main.transform.position
         );
         gameObject.GetComponent<Animator>().SetTrigger("fishDead");
+
+        //check whether item (e.g. coin) is dropped
+        System.Random r = new System.Random();
+        if (r.NextDouble() <= dropChance)
+        {
+            DropItem();
+        }
         Destroy(gameObject, 0.75f);
+
+    }
+
+    private void DropItem()
+    {
+        GameObject parent = GameObject.FindGameObjectWithTag("PickupParent");
+        GameObject.Instantiate(itemDrop, transform.position, Quaternion.identity, parent.transform);
 
     }
 }

@@ -37,10 +37,12 @@ public class LevelManager : MonoBehaviour
         {
             pickUpCount = GameObject.FindGameObjectsWithTag("PickUp").Length;
 
+            /*
             if (pickUpCount <= 0)
             {
                 isGameOver = true;
             }
+            */
 
             if (countDown > 0)
             {

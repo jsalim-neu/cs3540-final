@@ -7,6 +7,8 @@ public class CameraController : MonoBehaviour
     GameObject player;
     Vector3 offset;
 
+    public float cameraHeight = 10f;
+
     public bool isTopDown = true;
     public float MouseCameraSensitivity = 1f;
 
@@ -22,7 +24,7 @@ public class CameraController : MonoBehaviour
     {
         if (isTopDown)
         {
-            transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 10, player.transform.position.z - 2f);
+            transform.position = new Vector3(player.transform.position.x, player.transform.position.y + cameraHeight, player.transform.position.z - 4f);
             transform.rotation = Quaternion.Euler(70, 0, 0);
         }
         else

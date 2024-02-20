@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 3}
+  m_LocalScale: {x: 3, y: 3, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -126,6 +126,9 @@ MonoBehaviour:
   deathSFX: {fileID: 8300000, guid: 13f83433eb9630049a1dcb60b9ac08e8, type: 3}
   detectionRadius: 10
   maxHealth: 3
+  itemDrop: {fileID: 3129200342344496425, guid: 3e29573f06c0a7e4fa986fff41de17af, type: 3}
+  itemParent: {fileID: 0}
+  dropChance: 1
 --- !u!95 &741178466077394306
 Animator:
   serializedVersion: 5
