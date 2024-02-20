@@ -30,11 +30,11 @@ public class CameraController : MonoBehaviour
         else
         {
             transform.position = player.transform.position + offset;
+            RotateWithMouse(Input.GetAxis("Mouse X") * MouseCameraSensitivity);
+            PitchCamera(-Input.GetAxis("Mouse Y") * MouseCameraSensitivity);
         }
         // transform.position = player.transform.position + offset;
 
-        RotateWithMouse(Input.GetAxis("Mouse X") * MouseCameraSensitivity);
-        PitchCamera(-Input.GetAxis("Mouse Y") * MouseCameraSensitivity);
     }
 
     public void RotateWithMouse(float x) {

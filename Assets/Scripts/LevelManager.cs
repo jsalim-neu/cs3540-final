@@ -30,7 +30,6 @@ public class LevelManager : MonoBehaviour
         SetTimerText();
         messagePanel.gameObject.SetActive(true);
         gameText.text = "Objective: Collect $10.";
-        messagePanel.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
