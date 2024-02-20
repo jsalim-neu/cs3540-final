@@ -12,10 +12,7 @@ public class PickupBehavior : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        if (LevelManager.isGameOver)
-        {
-            LevelManager.pickUpCount--;
-        }
+
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -32,11 +29,7 @@ public class PickupBehavior : MonoBehaviour
     {
         if (!LevelManager.isGameOver)
         {
-            LevelManager.pickUpCount--;
-            if (LevelManager.pickUpCount <= 0)
-            {
-                FindObjectOfType<LevelManager>().LevelBeat();
-            }
+            
         }
     }
 }
