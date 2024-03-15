@@ -31,7 +31,6 @@ public class PlayerController2 : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         weapon = GetComponent<WeaponController>();
         // controller = GetComponent<CharacterController>();
-        bullet = GameObject.FindGameObjectWithTag("Bullet");
         bulletParent = GameObject.FindWithTag("BulletParent");
         jumpSound = GetComponent<AudioSource>();
         groundPlane = new Plane(Vector3.up, Vector3.zero);

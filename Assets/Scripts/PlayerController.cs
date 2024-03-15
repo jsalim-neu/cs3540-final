@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameObject bullet;
     public float playerSpeed = 5f;
     public float JUMP_FORCE = 50;
 
@@ -17,7 +18,12 @@ public class PlayerController : MonoBehaviour
     AudioSource jumpSound;
     Ray cameraRay;
     Plane groundPlane;
-    public GameObject bullet;
+
+    GameObject gunPoint;
+
+    CharacterController controller;
+
+    PlayerAnimation animHandler;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +32,11 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         jumpSound = GetComponent<AudioSource>();
         groundPlane = new Plane(Vector3.up, Vector3.zero);
+        gunPoint = GameObject.FindGameObjectWithTag("Gunpoint");
+        FishEnemyBehavior.bulletHeight = gunPoint.transform.position.y;
+        controller = GetComponent<CharacterController>();
+        animHandler = GetComponentInChildren<PlayerAnimation>();
+        Debug.Log(animHandler == null);
     }
 
     // Update is called once per frame
@@ -44,33 +55,37 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         if (!LevelManager.isGameOver) {
+            //translate inputs to movement vector
             float moveHorizontal = Input.GetAxis("Horizontal");
             float moveVertical = Input.GetAxis("Vertical");
 
-            Vector3 foreVector = new Vector3(moveHorizontal, 0.0f, moveVertical).normalized;
-            //Debug.Log("foreVector: " + foreVector);
+            Vector3 input = (Vector3.right * moveHorizontal + Vector3.forward * moveVertical).normalized;
 
+            Vector3 moveDirection = input;
 
-            //rb.AddForce(foreVector * playerSpeed);
-
-            rb.transform.position = rb.transform.position + foreVector * playerSpeed * Time.deltaTime;
-
-            // rotate in the forward direction
-            // transform.rotation = Quaternion.LookRotation(foreVector);
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Jump();
-            }
-
+            //set speed
             if (Input.GetKey(KeyCode.LeftShift))
             {
                 playerSpeed = 10f;
+                animHandler.isRunning = true;
             }
             else
             {
                 playerSpeed = 5f;
+                animHandler.isRunning = false;
             }
+
+            moveDirection *= playerSpeed;
+
+            //apply gravity
+
+            moveDirection.y -= 9.81f;
+
+            controller.Move(moveDirection * Time.deltaTime);
+
+            //report movement direction to animation handler
+            animHandler.SetMoveDirection(input.normalized);
+            
         }
     }
 
@@ -83,8 +98,11 @@ public class PlayerController : MonoBehaviour
         if (groundPlane.Raycast(cameraRay, out rayLength)) {
             Vector3 pointToLook = cameraRay.GetPoint(rayLength);
             // Debug.Log("pointToLook: " + pointToLook);
-            Debug.DrawLine(cameraRay.origin, pointToLook, Color.blue);
-            transform.LookAt(new Vector3(pointToLook.x, transform.position.y, pointToLook.z));
+            Debug.DrawLine(transform.position, pointToLook, Color.blue);
+            pointToLook = new Vector3(pointToLook.x, transform.position.y, pointToLook.z);
+            transform.LookAt(pointToLook);
+            //report current rotation to animation handler
+            animHandler.SetPlayerRotation((pointToLook - transform.position).normalized);
         }
     }
 
@@ -102,7 +120,7 @@ public class PlayerController : MonoBehaviour
     void FireBullet() {
         Vector3 offset = new Vector3(0.1f, 0, 0.1f);
 
-        GameObject bulletClone = Instantiate(bullet, transform.position + transform.forward + offset, transform.rotation) as GameObject;
+        GameObject bulletClone = Instantiate(bullet, gunPoint.transform.position, gunPoint.transform.rotation) as GameObject;
 
         Rigidbody rb = bulletClone.GetComponent<Rigidbody>();
 

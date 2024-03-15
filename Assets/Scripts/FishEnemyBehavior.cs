@@ -25,6 +25,8 @@ public class FishEnemyBehavior : MonoBehaviour
     public GameObject itemDrop, itemParent;
     public float dropChance = 1f;
 
+    public static float bulletHeight = 0;
+
     void Start()
     {
         if (player == null)
@@ -64,11 +66,16 @@ public class FishEnemyBehavior : MonoBehaviour
         fishLookAt();
         
         //swim towards player
-        transform.position = Vector3.MoveTowards(
+        Vector3 newPosition = Vector3.MoveTowards(
             transform.position,
             player.position,
             moveSpeed * Time.deltaTime
         );
+
+        //correct y-position
+        newPosition.y = bulletHeight;
+
+        transform.position = newPosition;
     }
 
     private void fishLookAt()
@@ -76,6 +83,12 @@ public class FishEnemyBehavior : MonoBehaviour
         transform.LookAt(player);
         transform.Rotate(0,90,0);
 
+        Vector3 rotationCorrect = transform.eulerAngles;
+
+        rotationCorrect.x = 0;
+        rotationCorrect.z = 0;
+
+        transform.eulerAngles = rotationCorrect;
     }
 
     private void OnCollisionEnter(Collision other)

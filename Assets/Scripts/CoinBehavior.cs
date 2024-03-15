@@ -8,12 +8,14 @@ public class CoinBehavior : MonoBehaviour
     public AudioClip pickupSFX;
     public static int pickupCount = 0;
 
+    Collider collider;
+
 
     // Start is called before the first frame update
     void Start()
     {
         pickupCount++;
-        
+        collider = GetComponent<SphereCollider>();
     }
 
     // Update is called once per frame
@@ -29,6 +31,7 @@ public class CoinBehavior : MonoBehaviour
     {
         if (other.CompareTag("Player")) 
         {
+            collider.enabled = false;
 
             gameObject.GetComponent<Animator>().SetTrigger("coinCollected");
 

@@ -9,6 +9,7 @@ TagManager:
   - Bullet
   - BulletParent
   - PickupParent
+  - Gunpoint
   layers:
   - Default
   - TransparentFX
