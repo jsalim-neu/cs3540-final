@@ -12,17 +12,14 @@ public class WeaponController : MonoBehaviour
 
     public float range = 100f;
 
-    GameObject newBullet;
+    GameObject newBullet, bulletParent;
     Transform bulletDebris;
 
     void Start()
     {
-        if (bullet == null)
-        {
-            bullet = GameObject.FindGameObjectWithTag("Bullet");
-        }
-
         bulletDebris = GameObject.Find("BulletDebris").transform;
+        bulletParent = GameObject.FindWithTag("BulletParent");
+
     }
 
     // fires a bullet in the direction the player is facing
