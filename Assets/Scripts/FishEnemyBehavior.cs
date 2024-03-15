@@ -83,6 +83,12 @@ public class FishEnemyBehavior : MonoBehaviour
         transform.LookAt(player);
         transform.Rotate(0,90,0);
 
+        Vector3 rotationCorrect = transform.eulerAngles;
+
+        rotationCorrect.x = 0;
+        rotationCorrect.z = 0;
+
+        transform.eulerAngles = rotationCorrect;
     }
 
     private void OnCollisionEnter(Collision other)

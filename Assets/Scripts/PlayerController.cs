@@ -23,6 +23,8 @@ public class PlayerController : MonoBehaviour
 
     CharacterController controller;
 
+    PlayerAnimation animHandler;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +35,8 @@ public class PlayerController : MonoBehaviour
         gunPoint = GameObject.FindGameObjectWithTag("Gunpoint");
         FishEnemyBehavior.bulletHeight = gunPoint.transform.position.y;
         controller = GetComponent<CharacterController>();
+        animHandler = GetComponentInChildren<PlayerAnimation>();
+        Debug.Log(animHandler == null);
     }
 
     // Update is called once per frame
@@ -55,16 +59,20 @@ public class PlayerController : MonoBehaviour
             float moveHorizontal = Input.GetAxis("Horizontal");
             float moveVertical = Input.GetAxis("Vertical");
 
-            Vector3 moveDirection = (Vector3.right * moveHorizontal + Vector3.forward * moveVertical).normalized;
+            Vector3 input = (Vector3.right * moveHorizontal + Vector3.forward * moveVertical).normalized;
+
+            Vector3 moveDirection = input;
 
             //set speed
             if (Input.GetKey(KeyCode.LeftShift))
             {
                 playerSpeed = 10f;
+                animHandler.isRunning = true;
             }
             else
             {
                 playerSpeed = 5f;
+                animHandler.isRunning = false;
             }
 
             moveDirection *= playerSpeed;
@@ -75,14 +83,8 @@ public class PlayerController : MonoBehaviour
 
             controller.Move(moveDirection * Time.deltaTime);
 
-            // rotate in the forward direction
-            // transform.rotation = Quaternion.LookRotation(foreVector);
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                //Jump();
-            }
-
+            //report movement direction to animation handler
+            animHandler.SetMoveDirection(input.normalized);
             
         }
     }
@@ -96,8 +98,11 @@ public class PlayerController : MonoBehaviour
         if (groundPlane.Raycast(cameraRay, out rayLength)) {
             Vector3 pointToLook = cameraRay.GetPoint(rayLength);
             // Debug.Log("pointToLook: " + pointToLook);
-            Debug.DrawLine(cameraRay.origin, pointToLook, Color.blue);
-            transform.LookAt(new Vector3(pointToLook.x, transform.position.y, pointToLook.z));
+            Debug.DrawLine(transform.position, pointToLook, Color.blue);
+            pointToLook = new Vector3(pointToLook.x, transform.position.y, pointToLook.z);
+            transform.LookAt(pointToLook);
+            //report current rotation to animation handler
+            animHandler.SetPlayerRotation((pointToLook - transform.position).normalized);
         }
     }
 
