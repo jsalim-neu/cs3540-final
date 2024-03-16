@@ -10,6 +10,7 @@ TagManager:
   - BulletParent
   - PickupParent
   - Gunpoint
+  - LevelManager
   layers:
   - Default
   - TransparentFX

@@ -30,7 +30,6 @@ public class PlayerAnimation : MonoBehaviour
         }
         else 
         {
-            //Debug.Log("Movement detected!");
             anim.SetBool("isMoving", true);
         }
 

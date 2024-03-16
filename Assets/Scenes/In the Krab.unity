@@ -7777,7 +7777,7 @@ GameObject:
   - component: {fileID: 925250383}
   m_Layer: 0
   m_Name: LevelManager
-  m_TagString: Untagged
+  m_TagString: LevelManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7809,6 +7809,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8be1f16e3366ee4e89e3769d53fd678, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objType: 0
+  objectiveTargetCount: 3
   levelDuration: 100
   timerText: {fileID: 236679979}
   scoreText: {fileID: 2023424879}
@@ -7817,6 +7819,7 @@ MonoBehaviour:
   gameOverSFX: {fileID: 8300000, guid: 13f83433eb9630049a1dcb60b9ac08e8, type: 3}
   gameWonSFX: {fileID: 8300000, guid: 5457db11a05cfaa4e88547e1b41a2b7f, type: 3}
   nextLevel: 
+  money: 0
 --- !u!1001 &926946826
 PrefabInstance:
   m_ObjectHideFlags: 0

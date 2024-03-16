@@ -6,6 +6,11 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
+    public Objective objective;
+
+    public ObjectiveType objType;
+
+    public int objectiveTargetCount = 10;
     public float levelDuration = 10f;
     float countDown;
     public static bool isGameOver = false;
@@ -18,7 +23,8 @@ public class LevelManager : MonoBehaviour
 
     public string nextLevel;
 
-    public static float score = 0;
+    public float money = 0;
+
 
 
     // Start is called before the first frame update
@@ -29,7 +35,7 @@ public class LevelManager : MonoBehaviour
         //gameText.gameObject.SetActive(false);
         SetTimerText();
         messagePanel.gameObject.SetActive(true);
-        gameText.text = "Objective: Collect $10.";
+        SetObjective();
     }
 
     // Update is called once per frame
@@ -37,9 +43,9 @@ public class LevelManager : MonoBehaviour
     {
         if (!isGameOver)
         {
-            
-            if (score >= 10)
+            if (objective.CheckAchieved())
             {
+                Debug.Log(objective.objectiveCounter + ", " + objective.objectiveCountGoal);
                 LevelBeat();
             }
 
@@ -65,7 +71,23 @@ public class LevelManager : MonoBehaviour
 
     void SetScoreText()
     {
-        scoreText.text = "$" + score.ToString();
+        scoreText.text = "$" + money.ToString();
+    }
+
+    void SetObjective()
+    {
+        switch (objType)
+        {
+            case ObjectiveType.MONEY:
+                objective = new MoneyObjective(objectiveTargetCount);
+                gameText.text = "Objective: Collect $" + objectiveTargetCount + ".";
+                Debug.Log("GOAL: MONEY");
+                break;
+            default:
+                gameText.text = "dummy";
+                Debug.Log("GOAL NOT SET");
+                break;
+        }
     }
 
     public void LevelLost()
@@ -79,7 +101,7 @@ public class LevelManager : MonoBehaviour
             AudioSource.PlayClipAtPoint(gameOverSFX, Camera.main.transform.position);
         }
 
-        Invoke("LoadLevel", 2);
+        Invoke("LoadCurrentLevel", 2);
     }
 
     public void LevelBeat()
@@ -92,9 +114,19 @@ public class LevelManager : MonoBehaviour
             Camera.main.GetComponent<AudioSource>().pitch = 2;
             AudioSource.PlayClipAtPoint(gameWonSFX, Camera.main.transform.position);
         }
+        if (nextLevel != "") 
+        {
+            Invoke("LoadNextLevel", 2);
+        }
+
     }
 
-    void LoadLevel() {
+
+    void LoadCurrentLevel() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    void LoadNextLevel() {
         SceneManager.LoadScene(nextLevel);
     }
 }
