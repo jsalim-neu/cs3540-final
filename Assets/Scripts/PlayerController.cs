@@ -100,8 +100,10 @@ public class PlayerController : MonoBehaviour
             else {
                 controller.Move(moveDirection * Time.deltaTime);
                 dashRefresh -= Time.deltaTime;
+                
             }
-
+            dashTimeLeft = Mathf.Clamp(dashTimeLeft, 0, dashDuration);
+            dashRefresh = Mathf.Clamp(dashRefresh, 0, dashCooldown);
 
             //report movement direction to animation handler
             animHandler.SetMoveDirection(input.normalized);
