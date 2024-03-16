@@ -30,7 +30,6 @@ public class PlayerAnimation : MonoBehaviour
         }
         else 
         {
-            Debug.Log("Movement detected!");
             anim.SetBool("isMoving", true);
         }
 
@@ -39,7 +38,7 @@ public class PlayerAnimation : MonoBehaviour
 
         //compare angle between movement direction and player rotation
         float dot = Vector3.Dot(moveDirection, playerRotation);
-        Debug.Log(moveDirection + "; " + playerRotation + "; " + dot);
+        //Debug.Log(moveDirection + "; " + playerRotation + "; " + dot);
         if (dot > 0)
         {
             orientationNum = 8;

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CoinBehavior : MonoBehaviour
 {
+    public LevelManager levelManager;
     public float scoreValue = 1f;
     public AudioClip pickupSFX;
     public static int pickupCount = 0;
@@ -16,6 +17,7 @@ public class CoinBehavior : MonoBehaviour
     {
         pickupCount++;
         collider = GetComponent<SphereCollider>();
+        levelManager = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelManager>();
     }
 
     // Update is called once per frame
@@ -35,10 +37,11 @@ public class CoinBehavior : MonoBehaviour
 
             gameObject.GetComponent<Animator>().SetTrigger("coinCollected");
 
-            LevelManager.score += scoreValue;
+            levelManager.money += scoreValue;
 
+            levelManager.objective.ObjectiveUpdate(ObjectiveType.MONEY, (int)scoreValue);
 
-            Debug.Log("SCORE: " + LevelManager.score);
+            Debug.Log("SCORE: " + levelManager.money);
             
             AudioSource.PlayClipAtPoint(pickupSFX, Camera.main.transform.position);
 

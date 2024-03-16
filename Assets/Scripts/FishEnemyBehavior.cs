@@ -22,7 +22,8 @@ public class FishEnemyBehavior : MonoBehaviour
 
     // item drop vars
 
-    public GameObject itemDrop, itemParent;
+    public GameObject itemDrop;
+    GameObject itemParent;
     public float dropChance = 1f;
 
     public static float bulletHeight = 0;
