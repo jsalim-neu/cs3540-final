@@ -12,7 +12,13 @@ public class PlayerController : MonoBehaviour
 
     public float bulletCooldown = 0.1f;
 
+    public float dashSpeed = 20f, dashDuration = 0.5f, dashCooldown = 3f;
+
     float bulletRefresh;
+
+    float dashTimeLeft = 0, dashRefresh = 0;
+
+    Vector3 dashDirection;
 
     Rigidbody rb;
     AudioSource jumpSound;
@@ -36,7 +42,6 @@ public class PlayerController : MonoBehaviour
         FishEnemyBehavior.bulletHeight = gunPoint.transform.position.y;
         controller = GetComponent<CharacterController>();
         animHandler = GetComponentInChildren<PlayerAnimation>();
-        Debug.Log(animHandler == null);
     }
 
     // Update is called once per frame
@@ -50,16 +55,21 @@ public class PlayerController : MonoBehaviour
         else {
             bulletRefresh -= Time.deltaTime;
         }
+        //handle dash input
+        if (Input.GetKeyDown(KeyCode.Space) && dashRefresh <= 0)
+            {
+                dashDirection = SetDirection();
+                dashTimeLeft = dashDuration;
+                dashRefresh = dashCooldown;
+            }
+
     }
 
     void FixedUpdate()
     {
         if (!LevelManager.isGameOver) {
             //translate inputs to movement vector
-            float moveHorizontal = Input.GetAxis("Horizontal");
-            float moveVertical = Input.GetAxis("Vertical");
-
-            Vector3 input = (Vector3.right * moveHorizontal + Vector3.forward * moveVertical).normalized;
+            Vector3 input = SetDirection();
 
             Vector3 moveDirection = input;
 
@@ -81,12 +91,24 @@ public class PlayerController : MonoBehaviour
 
             moveDirection.y -= 9.81f;
 
-            controller.Move(moveDirection * Time.deltaTime);
+            //handle dash behavior
+            if (dashTimeLeft > 0) {
+                Dash(Time.deltaTime);
+                dashTimeLeft -= Time.deltaTime;
+            }
+
+            else {
+                controller.Move(moveDirection * Time.deltaTime);
+                dashRefresh -= Time.deltaTime;
+            }
+
 
             //report movement direction to animation handler
             animHandler.SetMoveDirection(input.normalized);
             
         }
+        Debug.Log("Dash time left: " + dashTimeLeft + "; dash refresh: " + dashRefresh);
+
     }
 
     
@@ -132,6 +154,20 @@ public class PlayerController : MonoBehaviour
 
         Destroy(bulletClone, 2f);
 
+    }
+
+    void Dash(float timeElapsed)
+    {
+        //apply gravity
+        dashDirection.y -= 9.81f;
+        controller.Move(dashDirection * timeElapsed * dashSpeed);
+    }
+
+    private Vector3 SetDirection()
+    {
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        float moveVertical = Input.GetAxis("Vertical");
+        return (Vector3.right * moveHorizontal + Vector3.forward * moveVertical).normalized;
     }
 
     private void Jump()

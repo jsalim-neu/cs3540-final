@@ -18586,6 +18586,9 @@ MonoBehaviour:
   JUMP_FORCE: 5
   bulletSpeed: 20
   bulletCooldown: 0.3
+  dashSpeed: 20
+  dashDuration: 0.4
+  dashCooldown: 3
 --- !u!54 &2019780630
 Rigidbody:
   m_ObjectHideFlags: 0
