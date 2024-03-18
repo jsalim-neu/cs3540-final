@@ -52,13 +52,9 @@ public class FishEnemyBehavior : MonoBehaviour
             if (isAggro && !isGettingHit) {
                 FollowPlayer();
             }
-
-
-            
         }
-
-        
     }
+
     void FollowPlayer() {
         // turn to face player
         fishLookAt();

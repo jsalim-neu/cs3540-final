@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311947, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -18672,12 +18672,12 @@ GameObject:
   - component: {fileID: 2019780634}
   - component: {fileID: 2019780633}
   - component: {fileID: 2019780632}
-  - component: {fileID: 2019780631}
   - component: {fileID: 2019780630}
-  - component: {fileID: 2019780629}
   - component: {fileID: 2019780628}
+  - component: {fileID: 2019780629}
   - component: {fileID: 2019780635}
   - component: {fileID: 2019780636}
+  - component: {fileID: 2019780637}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -18795,9 +18795,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSpeed: 5
   JUMP_FORCE: 5
-  bulletSpeed: 20
+  bulletSpeed: 5
   bulletCooldown: 0.3
   bullet: {fileID: 4031836183731681380, guid: 7b943f735f370480c9ea10968d7e5a43, type: 3}
+  homingProjectilePrefab: {fileID: 6302807132026841749, guid: 3abfc9253e063ad419f75248117c3187, type: 3}
 --- !u!54 &2019780630
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -18825,27 +18826,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!135 &2019780631
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2019780627}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 1
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &2019780632
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -18949,6 +18929,27 @@ MonoBehaviour:
   canShoot: 1
   isFullAuto: 0
   range: 100
+--- !u!135 &2019780637
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2019780627}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 1
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &2022369764
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20419,6 +20420,10 @@ PrefabInstance:
     - target: {fileID: 7770584863604633872, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}
       propertyPath: m_Name
       value: FishEnemy (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7770584863604633872, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

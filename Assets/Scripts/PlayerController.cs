@@ -6,10 +6,10 @@ public class PlayerController : MonoBehaviour
 {
     public float playerSpeed = 5f;
     public float JUMP_FORCE = 50;
-
     public float bulletSpeed = 20f;
-
     public float bulletCooldown = 0.1f;
+    public GameObject bullet;
+    public GameObject homingProjectilePrefab;
 
     float bulletRefresh;
 
@@ -17,7 +17,9 @@ public class PlayerController : MonoBehaviour
     AudioSource jumpSound;
     Ray cameraRay;
     Plane groundPlane;
-    public GameObject bullet;
+
+    private float startTime;
+    private float journeyLength;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +28,8 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         jumpSound = GetComponent<AudioSource>();
         groundPlane = new Plane(Vector3.up, Vector3.zero);
+
+        startTime = 0;
     }
 
     // Update is called once per frame
@@ -33,12 +37,94 @@ public class PlayerController : MonoBehaviour
     {
         RotateWithMouse();
 
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            ShootHoming();
+        }
+
         if (bulletRefresh <= 0) {
             Shoot();
         }
         else {
             bulletRefresh -= Time.deltaTime;
         }
+    }
+
+    void ShootHoming()
+    {
+        GameObject homingTarget = GetHomingTarget();
+
+        if (homingTarget != null)
+        {
+            GameObject homingProjectile = Instantiate(
+                homingProjectilePrefab,
+                transform.position,
+                transform.rotation
+            );
+
+            float distanceToTravel = Vector3.Distance(
+                homingProjectile.transform.position,
+                homingTarget.transform.position
+            );
+
+            StartCoroutine(FireHomingProjectile(
+                homingProjectile,
+                homingTarget,
+                distanceToTravel / bulletSpeed
+            ));
+        }
+    }
+
+    IEnumerator FireHomingProjectile(GameObject homingProjectile, GameObject homingTarget, float duration)
+    {
+        float time = 0;
+        Vector3 startPos = homingProjectile.transform.position;
+
+        while (time < duration)
+        {
+            if (homingTarget != null)
+            {
+                homingProjectile.transform.position = Vector3.Lerp(
+                    startPos,
+                    homingTarget.transform.position,
+                    time / duration
+                );
+
+                time += Time.deltaTime;
+                yield return null;
+            }
+            else
+            {
+                // if the target is destroyed, let the projectile continue in the same direction
+                homingProjectile.transform.position = Vector3.Lerp(
+                    startPos,
+                    startPos + homingProjectile.transform.forward * 100,
+                    time / duration
+                );
+                time += Time.deltaTime;
+                yield return null;
+            }
+        }
+
+        homingProjectile.transform.position = homingTarget.transform.position;
+    }
+
+    GameObject GetHomingTarget()
+    {
+        GameObject homingTarget = null;
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            if (hit.collider.tag == "Enemy")
+            {
+                homingTarget = hit.collider.gameObject;
+            }
+        }
+
+        return homingTarget;
     }
 
     void FixedUpdate()
@@ -74,8 +160,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    
-
     void RotateWithMouse() {
         cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         float rayLength;
@@ -102,7 +186,11 @@ public class PlayerController : MonoBehaviour
     void FireBullet() {
         Vector3 offset = new Vector3(0.1f, 0, 0.1f);
 
-        GameObject bulletClone = Instantiate(bullet, transform.position + transform.forward + offset, transform.rotation) as GameObject;
+        GameObject bulletClone = Instantiate(
+            bullet,
+            transform.position + transform.forward + offset,
+            transform.rotation
+        ) as GameObject;
 
         Rigidbody rb = bulletClone.GetComponent<Rigidbody>();
 
@@ -113,7 +201,6 @@ public class PlayerController : MonoBehaviour
         );
 
         Destroy(bulletClone, 2f);
-
     }
 
     private void Jump()
