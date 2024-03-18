@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyHealth : MonoBehaviour
 {
@@ -9,7 +10,9 @@ public class EnemyHealth : MonoBehaviour
 
     // health/state handler vars
 
-    bool isDead, isGettingHit;
+    bool isDead;
+        
+    public bool isGettingHit;
 
     public float maxHealth = 3f;
 
@@ -53,6 +56,7 @@ public class EnemyHealth : MonoBehaviour
             Camera.main.transform.position
         );
         currentHealth -= 1;
+        healthSlider.value = currentHealth;
 
         //destroy bullet
         Destroy(other.gameObject);
@@ -66,6 +70,8 @@ public class EnemyHealth : MonoBehaviour
         {
             //play hit animation
             gameObject.GetComponent<Animator>().SetTrigger("fishHit");
+
+            
         }
         yield return new WaitForSeconds(0.25f);
         isGettingHit = false;

@@ -15,6 +15,8 @@ public class FishEnemyBehavior : MonoBehaviour
 
     public static float bulletHeight = 0;
 
+    public EnemyHealth enemyHealth;
+
     void Start()
     {
         if (player == null)
@@ -22,6 +24,8 @@ public class FishEnemyBehavior : MonoBehaviour
             player = GameObject.FindWithTag("Player").transform;
         }
         isAggro = false;
+
+        enemyHealth = GetComponent<EnemyHealth>();
     }
 
     // Update is called once per frame
@@ -35,7 +39,7 @@ public class FishEnemyBehavior : MonoBehaviour
             }
 
             //if enemy is activated, follow player
-            if (isAggro) {
+            if (isAggro && enemyHealth.isGettingHit == false) {
                 FollowPlayer();
             }
         }
