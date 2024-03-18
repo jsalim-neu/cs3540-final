@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public GameObject bullet;
+    public AudioClip shootSFX, dashSFX;
     public float playerSpeed = 5f;
     public float JUMP_FORCE = 50;
 
@@ -21,7 +22,8 @@ public class PlayerController : MonoBehaviour
     Vector3 dashDirection;
 
     Rigidbody rb;
-    AudioSource jumpSound;
+    TrailRenderer dashTrail;
+
     Ray cameraRay;
     Plane groundPlane;
 
@@ -36,7 +38,8 @@ public class PlayerController : MonoBehaviour
     {
         bulletRefresh = 0;
         rb = GetComponent<Rigidbody>();
-        jumpSound = GetComponent<AudioSource>();
+        dashTrail = GetComponent<TrailRenderer>();
+        dashTrail.emitting = false;
         groundPlane = new Plane(Vector3.up, Vector3.zero);
         gunPoint = GameObject.FindGameObjectWithTag("Gunpoint");
         FishEnemyBehavior.bulletHeight = gunPoint.transform.position.y;
@@ -47,21 +50,23 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        RotateWithMouse();
+        if (!LevelManager.isGameOver) {
+            RotateWithMouse();
 
-        if (bulletRefresh <= 0) {
-            Shoot();
-        }
-        else {
-            bulletRefresh -= Time.deltaTime;
-        }
-        //handle dash input
-        if (Input.GetKeyDown(KeyCode.Space) && dashRefresh <= 0)
-            {
-                dashDirection = SetDirection();
-                dashTimeLeft = dashDuration;
-                dashRefresh = dashCooldown;
+            if (bulletRefresh <= 0) {
+                Shoot();
             }
+            else {
+                bulletRefresh -= Time.deltaTime;
+            }
+
+            //handle dash input
+            if (Input.GetKeyDown(KeyCode.Space) && dashRefresh <= 0)
+            {
+                StartDash();
+            }
+        }
+        
 
     }
 
@@ -96,8 +101,9 @@ public class PlayerController : MonoBehaviour
                 Dash(Time.deltaTime);
                 dashTimeLeft -= Time.deltaTime;
             }
-
+            //player is not dashing
             else {
+                dashTrail.emitting = false;
                 controller.Move(moveDirection * Time.deltaTime);
                 dashRefresh -= Time.deltaTime;
                 
@@ -136,6 +142,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             FireBullet();
+            AudioSource.PlayClipAtPoint(shootSFX, Camera.main.transform.position, 0.2f);
             bulletRefresh = bulletCooldown;
         }
     }
@@ -158,6 +165,21 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    void StartDash()
+    {
+        dashDirection = SetDirection();
+        //if player is not moving, dash in forward direction
+        if (dashDirection == Vector3.zero)
+        {
+            dashDirection = transform.forward;
+        }
+
+        dashTimeLeft = dashDuration;
+        dashRefresh = dashCooldown;
+        dashTrail.emitting = true;
+        AudioSource.PlayClipAtPoint(dashSFX, Camera.main.transform.position, 0.7f);
+    }
+
     void Dash(float timeElapsed)
     {
         //apply gravity
@@ -169,8 +191,11 @@ public class PlayerController : MonoBehaviour
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
+
         return (Vector3.right * moveHorizontal + Vector3.forward * moveVertical).normalized;
     }
+
+    /*
 
     private void Jump()
     {
@@ -182,7 +207,7 @@ public class PlayerController : MonoBehaviour
         }
     }
     // shoots a bullet clone from the player to the direction of the player is facing
-    /*
+    
     void Shoot() {
         bullet.transform.position = transform.position;
         bullet.GetComponent<Rigidbody>().velocity = transform.forward * 10;
