@@ -84,8 +84,9 @@ public class LevelManager : MonoBehaviour
                 Debug.Log("GOAL: MONEY");
                 break;
             default:
-                gameText.text = "dummy";
-                Debug.Log("GOAL NOT SET");
+                objective = new InteractObjective();
+                gameText.text = "Objective: Enter the Krusty Krab.";
+                Debug.Log("GOAL: ENTER");
                 break;
         }
     }
