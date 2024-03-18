@@ -9,6 +9,9 @@ TagManager:
   - Bullet
   - BulletParent
   - PickupParent
+  - Throwable
+  - Explosion
+  - ForceField
   layers:
   - Default
   - TransparentFX

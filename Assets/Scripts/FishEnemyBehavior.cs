@@ -76,15 +76,28 @@ public class FishEnemyBehavior : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("Bullet"))
+        if (
+            other.gameObject.CompareTag("Bullet") ||
+            other.gameObject.CompareTag("Explosion")
+        )
         {
             //if not aggro already, makes sure it begins to follow the player
             isAggro = true;
-
-
             StartCoroutine(GetHit(other));
+        }
 
-
+        if (other.gameObject.CompareTag("ForceField"))
+        {
+            print("ForceField hit");
+            //if not aggro already, makes sure it begins to follow the player
+            isAggro = true;
+            AudioSource.PlayClipAtPoint(
+                hurtSFX,
+                Camera.main.transform.position
+            );
+            currentHealth = 0;
+            gameObject.GetComponent<Animator>().SetTrigger("fishHit");
+            Die();
         }
     }
 
@@ -111,7 +124,6 @@ public class FishEnemyBehavior : MonoBehaviour
         }
         yield return new WaitForSeconds(0.25f);
         isGettingHit = false;
-
     }
 
     private void Die()

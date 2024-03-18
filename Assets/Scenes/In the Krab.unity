@@ -18795,10 +18795,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSpeed: 5
   JUMP_FORCE: 5
-  bulletSpeed: 5
+  bulletSpeed: 100
   bulletCooldown: 0.3
   bullet: {fileID: 4031836183731681380, guid: 7b943f735f370480c9ea10968d7e5a43, type: 3}
   homingProjectilePrefab: {fileID: 6302807132026841749, guid: 3abfc9253e063ad419f75248117c3187, type: 3}
+  throwablePrefab: {fileID: 6302807132026841749, guid: a657565706a825a4587c13027efcdc08, type: 3}
+  pulsePrefab: {fileID: 894931810176164889, guid: 7881ca38d1f258046bdef20c69ddc576, type: 3}
 --- !u!54 &2019780630
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     public float bulletCooldown = 0.1f;
     public GameObject bullet;
     public GameObject homingProjectilePrefab;
+    public GameObject throwablePrefab;
+    public GameObject pulsePrefab;
 
     float bulletRefresh;
 
@@ -17,9 +19,7 @@ public class PlayerController : MonoBehaviour
     AudioSource jumpSound;
     Ray cameraRay;
     Plane groundPlane;
-
-    private float startTime;
-    private float journeyLength;
+    ThrowableBehaviour tb;
 
     // Start is called before the first frame update
     void Start()
@@ -28,8 +28,12 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         jumpSound = GetComponent<AudioSource>();
         groundPlane = new Plane(Vector3.up, Vector3.zero);
+        bulletSpeed = bulletSpeed * 1;
 
-        startTime = 0;
+        if (throwablePrefab != null)
+        {
+            tb = throwablePrefab.GetComponent<ThrowableBehaviour>();
+        }
     }
 
     // Update is called once per frame
@@ -37,16 +41,140 @@ public class PlayerController : MonoBehaviour
     {
         RotateWithMouse();
 
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            ShootHoming();
-        }
-
         if (bulletRefresh <= 0) {
             Shoot();
+            Pulse();
         }
         else {
             bulletRefresh -= Time.deltaTime;
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (!LevelManager.isGameOver) {
+            float moveHorizontal = Input.GetAxis("Horizontal");
+            float moveVertical = Input.GetAxis("Vertical");
+
+            Vector3 foreVector = new Vector3(moveHorizontal, 0.0f, moveVertical).normalized;
+            //Debug.Log("foreVector: " + foreVector);
+
+
+            //rb.AddForce(foreVector * playerSpeed);
+
+            rb.transform.position = rb.transform.position + foreVector * playerSpeed * Time.deltaTime;
+
+            // rotate in the forward direction
+            // transform.rotation = Quaternion.LookRotation(foreVector);
+
+            // if there is no input, stop the player
+            if (moveHorizontal == 0 && moveVertical == 0)
+            {
+                rb.velocity = Vector3.zero;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Jump();
+            }
+
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                playerSpeed = 10f;
+            }
+            else
+            {
+                playerSpeed = 5f;
+            }
+        }
+    }
+
+    void RotateWithMouse() {
+        cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        float rayLength;
+
+        if (groundPlane.Raycast(cameraRay, out rayLength)) {
+            Vector3 pointToLook = cameraRay.GetPoint(rayLength);
+            // Debug.Log("pointToLook: " + pointToLook);
+            Debug.DrawLine(cameraRay.origin, pointToLook, Color.blue);
+            transform.LookAt(new Vector3(pointToLook.x, transform.position.y, pointToLook.z));
+        }
+    }
+
+    void Pulse()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            if (pulsePrefab == null) return;
+
+            GameObject pulse = Instantiate(
+                pulsePrefab,
+                transform.position,
+                transform.rotation
+            );
+
+            Destroy(pulse, 2f);
+            bulletRefresh = bulletCooldown;
+        }
+    }
+
+    // shoots a bullet clone from the player to the direction of the mouse pointer
+    //now physics-based, without gravity
+    void Shoot() {
+        if (Input.GetMouseButton(0))
+        {
+            FireBullet(bullet, bulletSpeed);
+            bulletRefresh = bulletCooldown;
+        }
+        else if (Input.GetKeyDown(KeyCode.V))
+        {
+            ShootHoming();
+            bulletRefresh = bulletCooldown;
+        }
+        else if (Input.GetKeyDown(KeyCode.G))
+        {
+            FireBullet(throwablePrefab);
+            bulletRefresh = bulletCooldown;
+        }
+    }
+
+    //fires a singular bullet/throws a throwable object
+    void FireBullet(GameObject gameObject, float speed = 5) {
+        Vector3 offset = new Vector3(0.1f, 0, 0.1f);
+
+        GameObject bulletClone = Instantiate(
+            gameObject,
+            transform.position + transform.forward + offset,
+            transform.rotation
+        ) as GameObject;
+
+        Rigidbody rb = bulletClone.GetComponent<Rigidbody>();
+
+        rb.AddForce(transform.forward * speed, ForceMode.VelocityChange);
+
+        bulletClone.transform.SetParent(
+            GameObject.FindGameObjectWithTag("BulletParent").transform
+        );
+
+        if (bulletClone.gameObject.tag == "Throwable")
+        {
+            print("throwable");
+            bulletClone.GetComponent<ThrowableBehaviour>().TriggerThrowable();
+            Destroy(bulletClone, 10f);
+        }
+        else
+        {
+            Destroy(bulletClone, 2f);
+        }
+    }
+
+    private void Jump()
+    {
+        if (rb.velocity.y < 0.1f && rb.velocity.y > -0.1f)
+        {
+            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+            rb.transform.position = rb.transform.position + Vector3.up * JUMP_FORCE * Time.deltaTime;
+            //rb.AddForce(Vector3.up * JUMP_FORCE, ForceMode.Impulse);
         }
     }
 
@@ -127,91 +255,6 @@ public class PlayerController : MonoBehaviour
         return homingTarget;
     }
 
-    void FixedUpdate()
-    {
-        if (!LevelManager.isGameOver) {
-            float moveHorizontal = Input.GetAxis("Horizontal");
-            float moveVertical = Input.GetAxis("Vertical");
-
-            Vector3 foreVector = new Vector3(moveHorizontal, 0.0f, moveVertical).normalized;
-            //Debug.Log("foreVector: " + foreVector);
-
-
-            //rb.AddForce(foreVector * playerSpeed);
-
-            rb.transform.position = rb.transform.position + foreVector * playerSpeed * Time.deltaTime;
-
-            // rotate in the forward direction
-            // transform.rotation = Quaternion.LookRotation(foreVector);
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Jump();
-            }
-
-            if (Input.GetKey(KeyCode.LeftShift))
-            {
-                playerSpeed = 10f;
-            }
-            else
-            {
-                playerSpeed = 5f;
-            }
-        }
-    }
-
-    void RotateWithMouse() {
-        cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        float rayLength;
-
-        if (groundPlane.Raycast(cameraRay, out rayLength)) {
-            Vector3 pointToLook = cameraRay.GetPoint(rayLength);
-            // Debug.Log("pointToLook: " + pointToLook);
-            Debug.DrawLine(cameraRay.origin, pointToLook, Color.blue);
-            transform.LookAt(new Vector3(pointToLook.x, transform.position.y, pointToLook.z));
-        }
-    }
-
-    // shoots a bullet clone from the player to the direction of the mouse pointer
-    //now physics-based, without gravity
-    void Shoot() {
-        if (Input.GetMouseButton(0))
-        {
-            FireBullet();
-            bulletRefresh = bulletCooldown;
-        }
-    }
-
-    //fires a singular bullet
-    void FireBullet() {
-        Vector3 offset = new Vector3(0.1f, 0, 0.1f);
-
-        GameObject bulletClone = Instantiate(
-            bullet,
-            transform.position + transform.forward + offset,
-            transform.rotation
-        ) as GameObject;
-
-        Rigidbody rb = bulletClone.GetComponent<Rigidbody>();
-
-        rb.AddForce(transform.forward * bulletSpeed, ForceMode.VelocityChange);
-
-        bulletClone.transform.SetParent(
-            GameObject.FindGameObjectWithTag("BulletParent").transform
-        );
-
-        Destroy(bulletClone, 2f);
-    }
-
-    private void Jump()
-    {
-        if (rb.velocity.y < 0.1f && rb.velocity.y > -0.1f)
-        {
-            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
-            rb.transform.position = rb.transform.position + Vector3.up * JUMP_FORCE * Time.deltaTime;
-            //rb.AddForce(Vector3.up * JUMP_FORCE, ForceMode.Impulse);
-        }
-    }
     // shoots a bullet clone from the player to the direction of the player is facing
     /*
     void Shoot() {
