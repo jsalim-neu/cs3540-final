@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameObject bullet;
+    public AudioClip shootSFX, dashSFX;
     public float playerSpeed = 5f;
     public float JUMP_FORCE = 50;
     public float bulletSpeed = 20f;
@@ -13,20 +15,31 @@ public class PlayerController : MonoBehaviour
     public GameObject throwablePrefab;
     public GameObject pulsePrefab;
 
+    public float dashSpeed = 20f, dashDuration = 0.5f, dashCooldown = 3f;
+
     float bulletRefresh;
 
+    float dashTimeLeft = 0, dashRefresh = 0;
+
+    Vector3 dashDirection;
+
     Rigidbody rb;
-    AudioSource jumpSound;
+    TrailRenderer dashTrail;
+
     Ray cameraRay;
     Plane groundPlane;
     ThrowableBehaviour tb;
+    GameObject gunPoint;
+    CharacterController controller;
+    PlayerAnimation animHandler;
 
     // Start is called before the first frame update
     void Start()
     {
         bulletRefresh = 0;
         rb = GetComponent<Rigidbody>();
-        jumpSound = GetComponent<AudioSource>();
+        dashTrail = GetComponent<TrailRenderer>();
+        dashTrail.emitting = false;
         groundPlane = new Plane(Vector3.up, Vector3.zero);
         bulletSpeed = bulletSpeed * 1;
 
@@ -34,12 +47,17 @@ public class PlayerController : MonoBehaviour
         {
             tb = throwablePrefab.GetComponent<ThrowableBehaviour>();
         }
+        gunPoint = GameObject.FindGameObjectWithTag("Gunpoint");
+        FishEnemyBehavior.bulletHeight = gunPoint.transform.position.y;
+        controller = GetComponent<CharacterController>();
+        animHandler = GetComponentInChildren<PlayerAnimation>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        RotateWithMouse();
+        if (!LevelManager.isGameOver) {
+            RotateWithMouse();
 
         if (bulletRefresh <= 0) {
             Shoot();
@@ -48,45 +66,60 @@ public class PlayerController : MonoBehaviour
         else {
             bulletRefresh -= Time.deltaTime;
         }
+        //handle dash input
+            if (Input.GetKeyDown(KeyCode.Space) && dashRefresh <= 0)
+            {
+                StartDash();
+            }
+
     }
 
     void FixedUpdate()
     {
         if (!LevelManager.isGameOver) {
-            float moveHorizontal = Input.GetAxis("Horizontal");
-            float moveVertical = Input.GetAxis("Vertical");
+            //translate inputs to movement vector
+            Vector3 input = SetDirection();
+            Vector3 moveDirection = input;
 
-            Vector3 foreVector = new Vector3(moveHorizontal, 0.0f, moveVertical).normalized;
-            //Debug.Log("foreVector: " + foreVector);
-
-
-            //rb.AddForce(foreVector * playerSpeed);
-
-            rb.transform.position = rb.transform.position + foreVector * playerSpeed * Time.deltaTime;
-
-            // rotate in the forward direction
-            // transform.rotation = Quaternion.LookRotation(foreVector);
-
-            // if there is no input, stop the player
-            if (moveHorizontal == 0 && moveVertical == 0)
-            {
-                rb.velocity = Vector3.zero;
-            }
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Jump();
-            }
-
+            //set speed
             if (Input.GetKey(KeyCode.LeftShift))
             {
                 playerSpeed = 10f;
+                animHandler.isRunning = true;
             }
             else
             {
                 playerSpeed = 5f;
+                animHandler.isRunning = false;
             }
+
+            moveDirection *= playerSpeed;
+
+            //apply gravity
+
+            moveDirection.y -= 9.81f;
+
+            //handle dash behavior
+            if (dashTimeLeft > 0) {
+                Dash(Time.deltaTime);
+                dashTimeLeft -= Time.deltaTime;
+            }
+            //player is not dashing
+            else {
+                dashTrail.emitting = false;
+                controller.Move(moveDirection * Time.deltaTime);
+                dashRefresh -= Time.deltaTime;
+                
+            }
+            dashTimeLeft = Mathf.Clamp(dashTimeLeft, 0, dashDuration);
+            dashRefresh = Mathf.Clamp(dashRefresh, 0, dashCooldown);
+
+            //report movement direction to animation handler
+            animHandler.SetMoveDirection(input.normalized);
+            
         }
+        Debug.Log("Dash time left: " + dashTimeLeft + "; dash refresh: " + dashRefresh);
+
     }
 
     void RotateWithMouse() {
@@ -96,8 +129,11 @@ public class PlayerController : MonoBehaviour
         if (groundPlane.Raycast(cameraRay, out rayLength)) {
             Vector3 pointToLook = cameraRay.GetPoint(rayLength);
             // Debug.Log("pointToLook: " + pointToLook);
-            Debug.DrawLine(cameraRay.origin, pointToLook, Color.blue);
-            transform.LookAt(new Vector3(pointToLook.x, transform.position.y, pointToLook.z));
+            Debug.DrawLine(transform.position, pointToLook, Color.blue);
+            pointToLook = new Vector3(pointToLook.x, transform.position.y, pointToLook.z);
+            transform.LookAt(pointToLook);
+            //report current rotation to animation handler
+            animHandler.SetPlayerRotation((pointToLook - transform.position).normalized);
         }
     }
 
@@ -124,11 +160,13 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             FireBullet(bullet, bulletSpeed);
+            AudioSource.PlayClipAtPoint(shootSFX, Camera.main.transform.position, 0.2f);
             bulletRefresh = bulletCooldown;
         }
         else if (Input.GetKeyDown(KeyCode.V))
         {
             ShootHoming();
+            AudioSource.PlayClipAtPoint(shootSFX, Camera.main.transform.position, 0.2f);
             bulletRefresh = bulletCooldown;
         }
         else if (Input.GetKeyDown(KeyCode.G))
@@ -143,9 +181,9 @@ public class PlayerController : MonoBehaviour
         Vector3 offset = new Vector3(0.1f, 0, 0.1f);
 
         GameObject bulletClone = Instantiate(
-            gameObject,
-            transform.position + transform.forward + offset,
-            transform.rotation
+          gameObject,
+          gunPoint.transform.position,
+          gunPoint.transform.rotation
         ) as GameObject;
 
         Rigidbody rb = bulletClone.GetComponent<Rigidbody>();
@@ -158,7 +196,6 @@ public class PlayerController : MonoBehaviour
 
         if (bulletClone.gameObject.tag == "Throwable")
         {
-            print("throwable");
             bulletClone.GetComponent<ThrowableBehaviour>().TriggerThrowable();
             Destroy(bulletClone, 10f);
         }
@@ -167,6 +204,38 @@ public class PlayerController : MonoBehaviour
             Destroy(bulletClone, 2f);
         }
     }
+
+    void StartDash()
+    {
+        dashDirection = SetDirection();
+        //if player is not moving, dash in forward direction
+        if (dashDirection == Vector3.zero)
+        {
+            dashDirection = transform.forward;
+        }
+
+        dashTimeLeft = dashDuration;
+        dashRefresh = dashCooldown;
+        dashTrail.emitting = true;
+        AudioSource.PlayClipAtPoint(dashSFX, Camera.main.transform.position, 0.7f);
+    }
+
+    void Dash(float timeElapsed)
+    {
+        //apply gravity
+        dashDirection.y -= 9.81f;
+        controller.Move(dashDirection * timeElapsed * dashSpeed);
+    }
+
+    private Vector3 SetDirection()
+    {
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        float moveVertical = Input.GetAxis("Vertical");
+
+        return (Vector3.right * moveHorizontal + Vector3.forward * moveVertical).normalized;
+    }
+
+    /*
 
     private void Jump()
     {
@@ -256,7 +325,7 @@ public class PlayerController : MonoBehaviour
     }
 
     // shoots a bullet clone from the player to the direction of the player is facing
-    /*
+    
     void Shoot() {
         bullet.transform.position = transform.position;
         bullet.GetComponent<Rigidbody>().velocity = transform.forward * 10;

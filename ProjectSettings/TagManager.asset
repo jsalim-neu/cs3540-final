@@ -12,6 +12,8 @@ TagManager:
   - Throwable
   - Explosion
   - ForceField
+  - Gunpoint
+  - LevelManager
   layers:
   - Default
   - TransparentFX

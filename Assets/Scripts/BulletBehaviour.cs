@@ -24,6 +24,12 @@ public class BulletBehaviour : MonoBehaviour
             Debug.Log("Collision hit!" + collision.gameObject.name);
             //Destroy(collision.gameObject);
         }
+        else if (collision.gameObject.tag != "Player")
+        {
+            gameObject.SetActive(false);
+            //instantiate spark particle effect?
+        }
+        
     }
 
     void OnTriggerEnter(Collider other)
