@@ -39,7 +39,7 @@ public class FishEnemyBehavior : MonoBehaviour
             }
 
             //if enemy is activated, follow player
-            if (isAggro && enemyHealth.isGettingHit == false) {
+            if (isAggro && !enemyHealth.isGettingHit && !enemyHealth.isDead) {
                 FollowPlayer();
             }
         }

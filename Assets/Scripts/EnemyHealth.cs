@@ -12,11 +12,10 @@ public class EnemyHealth : MonoBehaviour
 
     // health/state handler vars
 
-    public bool isGettingHit;
+    public bool isGettingHit, isDead;
     public float maxHealth = 3f;
 
     float currentHealth;
-    bool isDead;
 
     // item drop vars
 

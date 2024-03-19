@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311947, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -18697,8 +18697,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bullet: {fileID: 4031836183731681380, guid: 7b943f735f370480c9ea10968d7e5a43, type: 3}
-  shootSFX: {fileID: 0}
-  dashSFX: {fileID: 0}
+  shootSFX: {fileID: 8300000, guid: c2ea2f538cf5bed4dae56fca5c46e10f, type: 3}
+  dashSFX: {fileID: 8300000, guid: c573991ab3bdd1849ba30035ef0da992, type: 3}
   playerSpeed: 5
   JUMP_FORCE: 5
   bulletSpeed: 20
