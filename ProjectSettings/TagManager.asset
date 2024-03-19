@@ -9,6 +9,9 @@ TagManager:
   - Bullet
   - BulletParent
   - PickupParent
+  - Throwable
+  - Explosion
+  - ForceField
   - Gunpoint
   - LevelManager
   layers:

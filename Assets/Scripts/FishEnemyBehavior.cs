@@ -44,6 +44,7 @@ public class FishEnemyBehavior : MonoBehaviour
             }
         }
     }
+
     void FollowPlayer() {
         // turn to face player
         fishLookAt();
@@ -65,9 +66,7 @@ public class FishEnemyBehavior : MonoBehaviour
     {
         transform.LookAt(player);
         transform.Rotate(0,90,0);
-
         Vector3 rotationCorrect = transform.eulerAngles;
-
         rotationCorrect.x = 0;
         rotationCorrect.z = 0;
 
