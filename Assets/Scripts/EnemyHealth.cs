@@ -8,15 +8,15 @@ public class EnemyHealth : MonoBehaviour
     public AudioClip hurtSFX, deathSFX;
     public Slider healthSlider;
 
+    Transform enemyHUD_Transform;
+
     // health/state handler vars
 
-    bool isDead;
-        
     public bool isGettingHit;
-
     public float maxHealth = 3f;
 
     float currentHealth;
+    bool isDead;
 
     // item drop vars
 
@@ -34,9 +34,16 @@ public class EnemyHealth : MonoBehaviour
     {
         currentHealth = maxHealth;
         healthSlider.value = currentHealth;
+        itemParent = GameObject.FindGameObjectWithTag("PickupParent");
+        enemyHUD_Transform = transform.GetChild(0);
 
         isDead = false;
         isGettingHit = false;
+    }
+
+    void Update()
+    {
+        
     }
 
     private void OnCollisionEnter(Collision other)
@@ -75,7 +82,6 @@ public class EnemyHealth : MonoBehaviour
         }
         yield return new WaitForSeconds(0.25f);
         isGettingHit = false;
-
     }
 
     private void Die()
@@ -100,7 +106,6 @@ public class EnemyHealth : MonoBehaviour
 
     private void DropItem()
     {
-        GameObject parent = GameObject.FindGameObjectWithTag("PickupParent");
-        GameObject.Instantiate(itemDrop, transform.position, Quaternion.identity, parent.transform);
+        GameObject.Instantiate(itemDrop, transform.position, Quaternion.identity, itemParent.transform);
     }
 }
