@@ -9,16 +9,18 @@ public class PlayerController : MonoBehaviour
     public float playerSpeed = 5f;
     public float JUMP_FORCE = 50;
     public float bulletSpeed = 20f;
-    public float bulletCooldown = 0.1f;
+    public float bulletCooldown = 0.1f, pulseCooldown = 1f;
     public GameObject homingProjectilePrefab;
     public GameObject throwablePrefab;
     public GameObject pulsePrefab;
 
     public float dashSpeed = 20f, dashDuration = 0.5f, dashCooldown = 3f;
 
-    float bulletRefresh;
+    float bulletRefresh, pulseRefresh;
 
     float dashTimeLeft = 0, dashRefresh = 0;
+
+    //UIController ui;
 
     Vector3 dashDirection;
 
@@ -36,6 +38,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         bulletRefresh = 0;
+        pulseRefresh = 0;
         rb = GetComponent<Rigidbody>();
         dashTrail = GetComponent<TrailRenderer>();
         dashTrail.emitting = false;
@@ -50,6 +53,7 @@ public class PlayerController : MonoBehaviour
         FishEnemyBehavior.bulletHeight = gunPoint.transform.position.y;
         controller = GetComponent<CharacterController>();
         animHandler = GetComponentInChildren<PlayerAnimation>();
+       //ui = GetComponent<UIController>();
     }
 
     // Update is called once per frame
@@ -62,12 +66,15 @@ public class PlayerController : MonoBehaviour
             if (bulletRefresh <= 0)
             {
                 Shoot();
+            }
+            if (FlagManager.playerHasPulse && pulseRefresh <= 0)
+            {
                 Pulse();
             }
-            else
-            {
-                bulletRefresh -= Time.deltaTime;
-            }
+            bulletRefresh -= Time.deltaTime;
+            bulletRefresh = Mathf.Clamp(bulletRefresh, 0, bulletCooldown);
+            pulseRefresh -= Time.deltaTime;
+            pulseRefresh = Mathf.Clamp(pulseRefresh, 0, pulseCooldown);
             //handle dash input
             if (Input.GetKeyDown(KeyCode.Space) && dashRefresh <= 0)
             {
@@ -158,7 +165,7 @@ public class PlayerController : MonoBehaviour
                 );
 
                 Destroy(pulse, 2f);
-                bulletRefresh = bulletCooldown;
+                pulseRefresh = pulseCooldown;
             }
         }
 

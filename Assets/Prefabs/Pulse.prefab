@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1788575592220534260}
   - component: {fileID: 4832774815762972779}
   - component: {fileID: 8332973291615790639}
+  - component: {fileID: -2235267128652401776}
   m_Layer: 0
   m_Name: Pulse
   m_TagString: ForceField
@@ -100,7 +101,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -133,3 +134,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &-2235267128652401776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 894931810176164889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 367e78cd0a8c1411aaaf7f9135296809, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pulseSFX: {fileID: 8300000, guid: 65893c9ec632aa34ab050794f41be617, type: 3}

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4358300443092621199}
   - component: {fileID: 4076722480658776293}
   - component: {fileID: 7683747160878820114}
+  - component: {fileID: 6310022911773393548}
   m_Layer: 0
   m_Name: Explosion
   m_TagString: Bullet
@@ -63,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e4ce8910e27654644846a91062e3e896, type: 2}
+  - {fileID: 2100000, guid: f59f303cd876c4d40ab0ea71ca9a6485, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -100,7 +101,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -133,3 +134,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &6310022911773393548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6302807132026841749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3eb009191e172405fab355e355653bd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifeTime: 0.3
+  explodeSFX: {fileID: 8300000, guid: 01a76fcd26df10c47808e5dac9fe248e, type: 3}
