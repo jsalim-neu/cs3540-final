@@ -55,7 +55,7 @@ public class EnemyHealth : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Bullet"))
+        if (other.CompareTag("Bullet") || other.CompareTag("Explosion"))
         {
             StartCoroutine(GetHit(other));
         }
@@ -67,13 +67,21 @@ public class EnemyHealth : MonoBehaviour
 
     private IEnumerator GetHit(Collider other)
     {
+        if (other.CompareTag("Bullet")) {
+            var damageScript = other.gameObject.GetComponent<BulletBehaviour>();
+            currentHealth -= damageScript.damage;
+        }
+        else {
+            var damageScript = other.gameObject.GetComponent<ExplosionBehavior>();
+            currentHealth -= damageScript.damage;
+        }
+
         //get hurt
         isGettingHit = true;
         AudioSource.PlayClipAtPoint(
             hurtSFX,
             Camera.main.transform.position
         );
-        currentHealth -= 1;
         healthSlider.value = currentHealth;
 
         //destroy bullet

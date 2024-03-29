@@ -147,7 +147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 5
-  damage: 10
+  damage: 20
   fuseTime: 1.5
   triggeredPrefab: {fileID: 6302807132026841749, guid: e415708ff9fb30646b06b4f258f16c5a, type: 3}
   thType: 0

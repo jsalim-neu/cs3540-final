@@ -99,7 +99,7 @@ public class LevelManager : MonoBehaviour
         messagePanel.gameObject.SetActive(true);
 
         if (gameOverSFX != null) {
-            Camera.main.GetComponent<AudioSource>().pitch = 1;
+            Camera.main.GetComponent<AudioSource>().pitch = 0.5f;
             AudioSource.PlayClipAtPoint(gameOverSFX, Camera.main.transform.position);
         }
 
@@ -113,7 +113,7 @@ public class LevelManager : MonoBehaviour
         messagePanel.gameObject.SetActive(true);
     
         if (gameWonSFX != null) {
-            Camera.main.GetComponent<AudioSource>().pitch = 2;
+            Camera.main.GetComponent<AudioSource>().pitch = 1;
             AudioSource.PlayClipAtPoint(gameWonSFX, Camera.main.transform.position);
         }
         if (nextLevel != "") 

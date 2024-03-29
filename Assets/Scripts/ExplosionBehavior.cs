@@ -11,6 +11,9 @@ public class ExplosionBehavior : MonoBehaviour
 
     public float maxRadius = 1;
 
+    public float damage = 2;
+
+
 
 
     // Start is called before the first frame update
