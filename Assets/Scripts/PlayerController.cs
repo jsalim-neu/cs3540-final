@@ -50,7 +50,6 @@ public class PlayerController : MonoBehaviour
             tb = throwablePrefab.GetComponent<ThrowableBehaviour>();
         }
         gunPoint = GameObject.FindGameObjectWithTag("Gunpoint");
-        FishEnemyBehavior.bulletHeight = gunPoint.transform.position.y;
         controller = GetComponent<CharacterController>();
         animHandler = GetComponentInChildren<PlayerAnimation>();
        //ui = GetComponent<UIController>();
@@ -59,6 +58,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        FishEnemyBehavior.bulletHeight = gunPoint.transform.position.y;
         if (!LevelManager.isGameOver)
         {
             RotateWithMouse();

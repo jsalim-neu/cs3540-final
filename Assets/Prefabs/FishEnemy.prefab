@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 6961854119965240234}
   - component: {fileID: 6283263626917782543}
   - component: {fileID: 8130780406338408645}
-  - component: {fileID: 6666653571930346421}
   - component: {fileID: -7829044220159873241}
   - component: {fileID: 741178466077394306}
   - component: {fileID: -1753965184321888094}
   - component: {fileID: 8898627255084317729}
+  - component: {fileID: 1040575005011637667}
   m_Layer: 0
   m_Name: FishEnemy
   m_TagString: Enemy
@@ -89,28 +89,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &6666653571930346421
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7770584863604633872}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 3100006622114138374, guid: a8fd0d08c30426d4c978a4998752cf7d, type: 3}
 --- !u!114 &-7829044220159873241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,9 +169,31 @@ MonoBehaviour:
   deathSFX: {fileID: 8300000, guid: 13f83433eb9630049a1dcb60b9ac08e8, type: 3}
   healthSlider: {fileID: 6975147274945193680}
   isGettingHit: 0
+  isDead: 0
   maxHealth: 3
   itemDrop: {fileID: 3129200342344496425, guid: 3e29573f06c0a7e4fa986fff41de17af, type: 3}
   dropChance: 1
+--- !u!65 &1040575005011637667
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7770584863604633872}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.8431362, y: 0.35, z: 0.13835584}
+  m_Center: {x: 0.02699241, y: -0.026563115, z: 0}
 --- !u!1001 &7742975603537332397
 PrefabInstance:
   m_ObjectHideFlags: 0
