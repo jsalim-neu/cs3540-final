@@ -255,31 +255,23 @@ public class PlayerController : MonoBehaviour
         void ShootHoming()
         {
             GameObject homingTarget = GetHomingTarget();
-
-            if (homingTarget != null)
-            {
-                GameObject homingProjectile = Instantiate(
+            
+            GameObject homingProjectile = Instantiate(
                     homingProjectilePrefab,
                     gunPoint.transform.position,
                     gunPoint.transform.rotation
                 );
 
-                homingProjectile.transform.SetParent(
+            homingProjectile.transform.SetParent(
                     GameObject.FindGameObjectWithTag("BulletParent").transform
-                );
+            );
 
-                float distanceToTravel = Vector3.Distance(
-                    homingProjectile.transform.position,
-                    homingTarget.transform.position
-                );
+            StartCoroutine(FireHomingProjectile(
+                homingProjectile,
+                homingTarget,
+                1.5f
+            ));
 
-                StartCoroutine(FireHomingProjectile(
-                    homingProjectile,
-                    homingTarget,
-                    1.5f
-                ));
-
-            }
         }
 
         IEnumerator FireHomingProjectile(GameObject homingProjectile, GameObject homingTarget, float duration)
@@ -301,7 +293,7 @@ public class PlayerController : MonoBehaviour
 
                 if (homingTarget != null && time >= duration)
                 {
-                    // if the target is destroyed, let the projectile continue in the same direction
+                    // if the target is still alive, move directly to target
                     tr.position = Vector3.MoveTowards(
                         tr.position,
                         homingTarget.transform.position,

@@ -151,6 +151,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToLive: 3
+  initialY: 0
+  damage: 1
 --- !u!199 &8908872103477996730
 ParticleSystemRenderer:
   serializedVersion: 6

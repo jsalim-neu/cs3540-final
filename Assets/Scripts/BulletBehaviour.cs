@@ -5,10 +5,25 @@ using UnityEngine;
 public class BulletBehaviour : MonoBehaviour
 {
     public float timeToLive = 3f;
+    public float initialY;
+
+    public float damage = 1;
 
     void Start()
     {
         StartCoroutine(DestroyBullet());
+        initialY = transform.position.y;
+    }
+
+    void Update()
+    {
+        transform.position = new Vector3(transform.position.x, initialY, transform.position.z);
+
+        Vector3 rotation = transform.rotation.eulerAngles;
+        rotation.x = 0f;
+        rotation.z = 0f;
+        
+        transform.rotation = Quaternion.Euler(rotation);
     }
 
     IEnumerator DestroyBullet()
