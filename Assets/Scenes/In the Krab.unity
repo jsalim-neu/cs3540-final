@@ -7064,6 +7064,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6666653571930346421, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6961854119965240234, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.7430077
@@ -18638,6 +18642,7 @@ MonoBehaviour:
   bullet: {fileID: 4031836183731681380, guid: 7b943f735f370480c9ea10968d7e5a43, type: 3}
   shootSFX: {fileID: 8300000, guid: c2ea2f538cf5bed4dae56fca5c46e10f, type: 3}
   dashSFX: {fileID: 8300000, guid: c573991ab3bdd1849ba30035ef0da992, type: 3}
+  homingSFX: {fileID: 8300000, guid: 4a2bcc7d331b2d74ea09d514edec8d52, type: 3}
   playerSpeed: 5
   JUMP_FORCE: 5
   bulletSpeed: 20
