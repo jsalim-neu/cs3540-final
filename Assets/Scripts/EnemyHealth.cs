@@ -98,7 +98,7 @@ public class EnemyHealth : MonoBehaviour
     private void Die()
     {
         isDead = true;
-        GetComponent<MeshCollider>().enabled = false;
+        GetComponent<Collider>().enabled = false;
         AudioSource.PlayClipAtPoint(
             deathSFX,
             Camera.main.transform.position

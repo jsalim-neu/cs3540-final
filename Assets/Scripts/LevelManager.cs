@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
+    //todo: make static to prevent LevelManager instance retrieval
     public Objective objective;
 
     public ObjectiveType objType;

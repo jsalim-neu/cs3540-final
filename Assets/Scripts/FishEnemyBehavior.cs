@@ -13,7 +13,7 @@ public class FishEnemyBehavior : MonoBehaviour
 
     bool isAggro;
 
-    public static float bulletHeight = 0;
+    public static float bulletHeight = 2.1f;
 
     public EnemyHealth enemyHealth;
 
@@ -26,6 +26,9 @@ public class FishEnemyBehavior : MonoBehaviour
         isAggro = false;
 
         enemyHealth = GetComponent<EnemyHealth>();
+
+        transform.position = new Vector3(transform.position.x, bulletHeight, transform.position.z);
+        
     }
 
     // Update is called once per frame
