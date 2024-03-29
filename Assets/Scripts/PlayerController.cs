@@ -5,20 +5,22 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public GameObject bullet;
-    public AudioClip shootSFX, dashSFX;
+    public AudioClip shootSFX, dashSFX, homingSFX;
     public float playerSpeed = 5f;
     public float JUMP_FORCE = 50;
     public float bulletSpeed = 20f;
-    public float bulletCooldown = 0.1f;
+    public float bulletCooldown = 0.1f, pulseCooldown = 1f;
     public GameObject homingProjectilePrefab;
     public GameObject throwablePrefab;
     public GameObject pulsePrefab;
 
     public float dashSpeed = 20f, dashDuration = 0.5f, dashCooldown = 3f;
 
-    float bulletRefresh;
+    float bulletRefresh, pulseRefresh;
 
     float dashTimeLeft = 0, dashRefresh = 0;
+
+    //UIController ui;
 
     Vector3 dashDirection;
 
@@ -36,6 +38,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         bulletRefresh = 0;
+        pulseRefresh = 0;
         rb = GetComponent<Rigidbody>();
         dashTrail = GetComponent<TrailRenderer>();
         dashTrail.emitting = false;
@@ -50,6 +53,7 @@ public class PlayerController : MonoBehaviour
         FishEnemyBehavior.bulletHeight = gunPoint.transform.position.y;
         controller = GetComponent<CharacterController>();
         animHandler = GetComponentInChildren<PlayerAnimation>();
+       //ui = GetComponent<UIController>();
     }
 
     // Update is called once per frame
@@ -62,12 +66,15 @@ public class PlayerController : MonoBehaviour
             if (bulletRefresh <= 0)
             {
                 Shoot();
+            }
+            if (FlagManager.playerHasPulse && pulseRefresh <= 0)
+            {
                 Pulse();
             }
-            else
-            {
-                bulletRefresh -= Time.deltaTime;
-            }
+            bulletRefresh -= Time.deltaTime;
+            bulletRefresh = Mathf.Clamp(bulletRefresh, 0, bulletCooldown);
+            pulseRefresh -= Time.deltaTime;
+            pulseRefresh = Mathf.Clamp(pulseRefresh, 0, pulseCooldown);
             //handle dash input
             if (Input.GetKeyDown(KeyCode.Space) && dashRefresh <= 0)
             {
@@ -124,7 +131,7 @@ public class PlayerController : MonoBehaviour
                 animHandler.SetMoveDirection(input.normalized);
 
             }
-            Debug.Log("Dash time left: " + dashTimeLeft + "; dash refresh: " + dashRefresh);
+            //Debug.Log("Dash time left: " + dashTimeLeft + "; dash refresh: " + dashRefresh);
 
         }
 
@@ -158,7 +165,7 @@ public class PlayerController : MonoBehaviour
                 );
 
                 Destroy(pulse, 2f);
-                bulletRefresh = bulletCooldown;
+                pulseRefresh = pulseCooldown;
             }
         }
 
@@ -175,7 +182,7 @@ public class PlayerController : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.V))
             {
                 ShootHoming();
-                AudioSource.PlayClipAtPoint(shootSFX, Camera.main.transform.position, 0.2f);
+                AudioSource.PlayClipAtPoint(homingSFX, Camera.main.transform.position, 0.2f);
                 bulletRefresh = bulletCooldown;
             }
             else if (Input.GetKeyDown(KeyCode.G))
@@ -253,8 +260,12 @@ public class PlayerController : MonoBehaviour
             {
                 GameObject homingProjectile = Instantiate(
                     homingProjectilePrefab,
-                    transform.position,
-                    transform.rotation
+                    gunPoint.transform.position,
+                    gunPoint.transform.rotation
+                );
+
+                homingProjectile.transform.SetParent(
+                    GameObject.FindGameObjectWithTag("BulletParent").transform
                 );
 
                 float distanceToTravel = Vector3.Distance(
@@ -265,57 +276,76 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(FireHomingProjectile(
                     homingProjectile,
                     homingTarget,
-                    distanceToTravel / bulletSpeed
+                    1.5f
                 ));
+
             }
         }
 
         IEnumerator FireHomingProjectile(GameObject homingProjectile, GameObject homingTarget, float duration)
         {
             float time = 0;
-            Vector3 startPos = homingProjectile.transform.position;
+            Transform tr = homingProjectile.transform;
 
-            while (time < duration)
+            while (homingProjectile != null)
             {
                 if (homingTarget != null)
                 {
-                    homingProjectile.transform.position = Vector3.Lerp(
-                        startPos,
-                        homingTarget.transform.position,
+                    Quaternion toRotation = Quaternion.FromToRotation(transform.forward, homingTarget.transform.position - tr.position);
+                    tr.rotation = Quaternion.Slerp(
+                        tr.rotation,
+                        toRotation,
                         time / duration
                     );
-
-                    time += Time.deltaTime;
-                    yield return null;
                 }
-                else
+
+                if (homingTarget != null && time >= duration)
                 {
                     // if the target is destroyed, let the projectile continue in the same direction
-                    homingProjectile.transform.position = Vector3.Lerp(
-                        startPos,
-                        startPos + homingProjectile.transform.forward * 100,
-                        time / duration
+                    tr.position = Vector3.MoveTowards(
+                        tr.position,
+                        homingTarget.transform.position,
+                        Time.deltaTime * bulletSpeed * 0.7f
                     );
-                    time += Time.deltaTime;
-                    yield return null;
                 }
+
+                else 
+                {
+                    // if the target is destroyed, let the projectile continue in the same direction
+                    tr.position = Vector3.MoveTowards(
+                        tr.position,
+                        tr.position + (tr.forward * 100),
+                        Time.deltaTime * bulletSpeed * 0.7f
+                    );
+                }
+                //turn toward homing target
+                
+                time += Time.deltaTime;
+                yield return null;
             }
 
-            homingProjectile.transform.position = homingTarget.transform.position;
         }
 
         GameObject GetHomingTarget()
         {
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
             GameObject homingTarget = null;
+            float minDistance = 65535f;
 
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+            //aim according to where the mouse is
+            Vector3 mousePos = Input.mousePosition;
+            mousePos.z = Camera.main.transform.position.y - 2;
 
-            if (Physics.Raycast(ray, out hit))
+            Vector3 aimPosition = Camera.main.ScreenToWorldPoint(mousePos);            
+
+            //loop through enemies, choose the one with the furthest position from the cursor
+            foreach (GameObject enemy in enemies)
             {
-                if (hit.collider.tag == "Enemy")
+                float dist = Vector3.Distance(enemy.transform.position, aimPosition);
+                if (dist < minDistance)
                 {
-                    homingTarget = hit.collider.gameObject;
+                    minDistance = dist;
+                    homingTarget = enemy;
                 }
             }
 

@@ -49,11 +49,23 @@ public class EnemyHealth : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Bullet"))
         {
-            StartCoroutine(GetHit(other));
+            StartCoroutine(GetHit(other.collider));
         }
     }
 
-    private IEnumerator GetHit(Collision other)
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Bullet"))
+        {
+            StartCoroutine(GetHit(other));
+        }
+        else if (other.CompareTag("ForceField"))
+        {
+            Die();
+        }
+    }
+
+    private IEnumerator GetHit(Collider other)
     {
         //get hurt
         isGettingHit = true;
@@ -65,7 +77,7 @@ public class EnemyHealth : MonoBehaviour
         healthSlider.value = currentHealth;
 
         //destroy bullet
-        Destroy(other.gameObject);
+        Destroy(other);
 
         //check whether enemy dies
         if (currentHealth <= 0)

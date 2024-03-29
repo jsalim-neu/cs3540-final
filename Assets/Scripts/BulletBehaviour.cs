@@ -22,7 +22,7 @@ public class BulletBehaviour : MonoBehaviour
         if (collision.gameObject.tag == "Enemy")
         {
             Debug.Log("Collision hit!" + collision.gameObject.name);
-            //Destroy(collision.gameObject);
+            Destroy(gameObject);
         }
         else if (collision.gameObject.tag != "Player")
         {
