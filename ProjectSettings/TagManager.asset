@@ -14,6 +14,7 @@ TagManager:
   - ForceField
   - Gunpoint
   - LevelManager
+  - UI
   layers:
   - Default
   - TransparentFX
