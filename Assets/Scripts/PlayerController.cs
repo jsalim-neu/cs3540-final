@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class PlayerController : MonoBehaviour
 
     float dashTimeLeft = 0, dashRefresh = 0;
 
-    //UIController ui;
+    UIController ui;
 
     Vector3 dashDirection;
 
@@ -52,7 +53,8 @@ public class PlayerController : MonoBehaviour
         gunPoint = GameObject.FindGameObjectWithTag("Gunpoint");
         controller = GetComponent<CharacterController>();
         animHandler = GetComponentInChildren<PlayerAnimation>();
-       //ui = GetComponent<UIController>();
+        ui = GameObject.FindGameObjectWithTag("UI").GetComponent<UIController>();
+
     }
 
     // Update is called once per frame
@@ -82,6 +84,8 @@ public class PlayerController : MonoBehaviour
             }
 
         }
+
+        SetSliders();
     }
 
         void FixedUpdate()
@@ -179,13 +183,13 @@ public class PlayerController : MonoBehaviour
                 AudioSource.PlayClipAtPoint(shootSFX, Camera.main.transform.position, 0.2f);
                 bulletRefresh = bulletCooldown;
             }
-            else if (Input.GetKeyDown(KeyCode.V))
+            else if (Input.GetKeyDown(KeyCode.V) && FlagManager.playerHasHoming)
             {
                 ShootHoming();
                 AudioSource.PlayClipAtPoint(homingSFX, Camera.main.transform.position, 0.2f);
                 bulletRefresh = bulletCooldown;
             }
-            else if (Input.GetKeyDown(KeyCode.G))
+            else if (Input.GetKeyDown(KeyCode.G) && FlagManager.playerHasGrenades)
             {
                 FireBullet(throwablePrefab);
                 bulletRefresh = bulletCooldown;
@@ -342,5 +346,16 @@ public class PlayerController : MonoBehaviour
             }
 
             return homingTarget;
+        }
+
+        private void SetSliders()
+        {
+            
+            //all slider values are capped between [0,1]
+            ui.SetSlider(UISlider.RELOAD, (bulletCooldown - bulletRefresh)/bulletCooldown);
+            ui.SetSlider(UISlider.DASH, (dashCooldown - dashRefresh)/dashCooldown);
+            ui.SetSlider(UISlider.HOMING, (bulletCooldown - bulletRefresh)/bulletCooldown);
+            ui.SetSlider(UISlider.GRENADE, (bulletCooldown - bulletRefresh)/bulletCooldown);
+            ui.SetSlider(UISlider.PULSE, (pulseCooldown - pulseRefresh)/pulseCooldown);
         }
     }

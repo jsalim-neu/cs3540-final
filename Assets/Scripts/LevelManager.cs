@@ -7,24 +7,22 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoBehaviour
 {
     //todo: make static to prevent LevelManager instance retrieval
-    public Objective objective;
-
     public ObjectiveType objType;
+
+    public Objective objective;
 
     public int objectiveTargetCount = 10;
     public float levelDuration = 10f;
     float countDown;
     public static bool isGameOver = false;
-
-    public Text timerText, scoreText, gameText;
-
-    public Image messagePanel;
     public AudioClip gameOverSFX;
     public AudioClip gameWonSFX;
 
     public string nextLevel;
 
     public float money = 0;
+
+    UIController ui;
 
 
 
@@ -34,8 +32,8 @@ public class LevelManager : MonoBehaviour
         isGameOver = false;
         countDown = levelDuration;
         //gameText.gameObject.SetActive(false);
-        SetTimerText();
-        messagePanel.gameObject.SetActive(true);
+        ui = GameObject.FindWithTag("UI").GetComponent<UIController>();
+        ui.SetTimerText(countDown);
         SetObjective();
     }
 
@@ -60,43 +58,33 @@ public class LevelManager : MonoBehaviour
                 LevelLost();
             }
 
-            SetTimerText();
-            SetScoreText();
+            ui.SetTimerText(countDown);
+            ui.SetScoreText(money);
         }
     }
 
-    void SetTimerText()
-    {
-        timerText.text = countDown.ToString("f2");
-    }
-
-    void SetScoreText()
-    {
-        scoreText.text = "$" + money.ToString();
-    }
-
-    void SetObjective()
+    public void SetObjective()
     {
         switch (objType)
         {
             case ObjectiveType.MONEY:
                 objective = new MoneyObjective(objectiveTargetCount);
-                gameText.text = "Objective: Collect $" + objectiveTargetCount + ".";
+                ui.SetGameText("Objective: Collect $" + objectiveTargetCount + ".");
                 Debug.Log("GOAL: MONEY");
                 break;
             default:
                 objective = new InteractObjective();
-                gameText.text = "Objective: Enter the Krusty Krab.";
+                ui.SetGameText("Objective: Enter the Krusty Krab.");
                 Debug.Log("GOAL: ENTER");
                 break;
         }
     }
 
+
     public void LevelLost()
     {
         isGameOver = true;
-        gameText.text = "You Lost!";
-        messagePanel.gameObject.SetActive(true);
+        ui.SetGameText("You Lost!");
 
         if (gameOverSFX != null) {
             Camera.main.GetComponent<AudioSource>().pitch = 0.5f;
@@ -109,8 +97,7 @@ public class LevelManager : MonoBehaviour
     public void LevelBeat()
     {
         isGameOver = true;
-        gameText.text = "You Won!";
-        messagePanel.gameObject.SetActive(true);
+        ui.SetGameText("You Won!");
     
         if (gameWonSFX != null) {
             Camera.main.GetComponent<AudioSource>().pitch = 1;
