@@ -9,11 +9,10 @@ public class ObjectiveParam
 {
     public ObjectiveType oType;
     public int oCount;
+    public string oText;
 }
 public class LevelManager : MonoBehaviour
 {
-    //todo: make static to prevent LevelManager instance retrieval
-
     public ObjectiveParam[] objectiveParams;
 
     static List<Objective> objectiveList = new List<Objective>();
@@ -28,7 +27,7 @@ public class LevelManager : MonoBehaviour
 
     public string nextLevel;
 
-    public float money = 0;
+    public static float money = 0;
 
     UIController ui;
 
@@ -60,6 +59,7 @@ public class LevelManager : MonoBehaviour
             if (countDown > 0)
             {
                 countDown -= Time.deltaTime;
+                SetObjectiveText();
             }
             else
             {
@@ -74,8 +74,9 @@ public class LevelManager : MonoBehaviour
 
     private void initObjectiveList()
     {
+        Debug.Log("Calling initObjList!");
         
-        foreach (ObjectiveParam op in objectiveParams) 
+        foreach (ObjectiveParam op in objectiveParams)
         {
             switch (op.oType)
             {
@@ -83,7 +84,7 @@ public class LevelManager : MonoBehaviour
                     objectiveList.Add(new MoneyObjective(op.oCount));
                     break;
                 case ObjectiveType.INTERACTION:
-                    objectiveList.Add(new InteractObjective(op.oCount));
+                    objectiveList.Add(new InteractObjective(op.oCount, op.oText));
                     break;
                 default:
                     break;
@@ -95,42 +96,55 @@ public class LevelManager : MonoBehaviour
 
     void SetCurrentObjective()
     {
-        
         if (objectiveList.Count > 0)
         {
             //pop first objective out of list and into current objectives
             currObjective = objectiveList[0];
             objectiveList.RemoveAt(0);
             Debug.Log("NEW OBJECTIVE OF TYPE: " + currObjective.objType);
+            SetObjectiveText();
         }
         else 
         {
             //all objectives complete, so level is complete!
             LevelBeat();
         }
-        
         /*
-        switch (objType)
+            switch (objType)
+            {
+                case ObjectiveType.MONEY:
+                    objective = new MoneyObjective(objectiveTargetCount);
+                    ui.SetGameText("Objective: Collect $" + objectiveTargetCount + ".");
+                    Debug.Log("GOAL: MONEY");
+                    break;
+                default:
+                    objective = new InteractObjective();
+                    ui.SetGameText("Objective: Enter the Krusty Krab.");
+                    Debug.Log("GOAL: ENTER");
+                    break;
+            }
+        */
+    }
+
+    void SetObjectiveText() 
+    {
+        switch (currObjective.objType)
         {
             case ObjectiveType.MONEY:
-                objective = new MoneyObjective(objectiveTargetCount);
-                ui.SetGameText("Objective: Collect $" + objectiveTargetCount + ".");
-                Debug.Log("GOAL: MONEY");
+                ui.SetGameText("Objective: Collect " + currObjective.objectiveCountGoal + 
+                    " doubloons. (" + currObjective.objectiveCounter + "/" + currObjective.objectiveCountGoal +")");
                 break;
-            default:
-                objective = new InteractObjective();
-                ui.SetGameText("Objective: Enter the Krusty Krab.");
-                Debug.Log("GOAL: ENTER");
+            case ObjectiveType.INTERACTION:
+                ui.SetGameText("Objective: " + currObjective.objectiveText);
                 break;
         }
-        */
     }
 
 
     public void LevelLost()
     {
         isGameOver = true;
-        ui.SetGameText("You Lost!");
+        ui.SetGameText("Game over!");
 
         if (gameOverSFX != null) {
             Camera.main.GetComponent<AudioSource>().pitch = 0.5f;
@@ -143,7 +157,7 @@ public class LevelManager : MonoBehaviour
     public void LevelBeat()
     {
         isGameOver = true;
-        ui.SetGameText("You Won!");
+        ui.SetGameText("Level complete!");
     
         if (gameWonSFX != null) {
             Camera.main.GetComponent<AudioSource>().pitch = 1;

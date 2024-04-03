@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311947, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -22323,6 +22323,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 32878997254255330, guid: f5fe19fd94412a74fa2ee7f35e81f8f3, type: 3}
+      propertyPath: objectiveParams.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 32878997254255330, guid: f5fe19fd94412a74fa2ee7f35e81f8f3, type: 3}
+      propertyPath: objectiveParams.Array.data[0].oCount
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3903133159104225245, guid: f5fe19fd94412a74fa2ee7f35e81f8f3, type: 3}
       propertyPath: m_Name
       value: LevelManager
