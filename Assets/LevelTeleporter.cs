@@ -8,7 +8,7 @@ public class LevelTeleporter : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            LevelManager.
+            //LevelManager.
         }
     }
 }

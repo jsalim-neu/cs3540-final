@@ -39,7 +39,7 @@ public class CoinBehavior : MonoBehaviour
 
             levelManager.money += scoreValue;
 
-            levelManager.objective.ObjectiveUpdate(ObjectiveType.MONEY, (int)scoreValue);
+            LevelManager.currObjective.ObjectiveUpdate(ObjectiveType.MONEY, (int)scoreValue);
 
             Debug.Log("SCORE: " + levelManager.money);
             

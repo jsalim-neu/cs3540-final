@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class DialoguePrompt : MonoBehaviour
 {
-    public LevelManager levelManager;
     public Text promptTextLabel;
     public Text dialoguePopUp;
     public KeyCode promptKey;
@@ -46,6 +45,7 @@ public class DialoguePrompt : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             promptTextLabel.gameObject.SetActive(true);
+            promptTextLabel.text = promptText;
             canActivateDialogue = true;
         }
     }
@@ -71,7 +71,7 @@ public class DialoguePrompt : MonoBehaviour
             ExitDialogue();
             if (requiredToProgress)
             {
-                levelManager.objective.ObjectiveUpdate(ObjectiveType.INTERACTION, 1);
+                LevelManager.currObjective.ObjectiveUpdate(ObjectiveType.INTERACTION, 1);
             }
         }
     }
