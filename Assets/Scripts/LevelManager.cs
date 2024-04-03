@@ -22,8 +22,6 @@ public class LevelManager : MonoBehaviour
 
     UIController ui;
 
-
-
     // Start is called before the first frame update
     void Start()
     {

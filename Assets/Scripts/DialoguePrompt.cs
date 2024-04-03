@@ -12,7 +12,16 @@ public class DialoguePrompt : MonoBehaviour
     public string promptText;
     public bool requiredToProgress = false;
 
+    public enum InteractableEnityType
+    {
+        NPC,
+        OBJECT
+    }
+
+    public InteractableEnityType interactableType = InteractableEnityType.NPC;
+
     DialogueScript dialogueScript;
+    EntityBehaviour entityBehaviour;
     bool isDialogueRunning = false;
     bool canActivateDialogue = false;
     
@@ -20,6 +29,11 @@ public class DialoguePrompt : MonoBehaviour
     {
         dialogueScript = GetComponent<DialogueScript>();
         promptTextLabel.text = promptText;
+
+        if (interactableType == InteractableEnityType.NPC)
+        {
+            entityBehaviour = GetComponent<EntityBehaviour>();
+        }
     }
 
     void Update()
@@ -47,6 +61,12 @@ public class DialoguePrompt : MonoBehaviour
         {
             promptTextLabel.gameObject.SetActive(true);
             canActivateDialogue = true;
+
+            if (interactableType == InteractableEnityType.NPC)
+            {
+                entityBehaviour.currentState = EntityBehaviour.FSMState.Idle;
+                print("Player in range");
+            }
         }
     }
 
@@ -57,6 +77,11 @@ public class DialoguePrompt : MonoBehaviour
             promptTextLabel.gameObject.SetActive(false);
             canActivateDialogue = false;
             ExitDialogue();
+
+            if (interactableType == InteractableEnityType.NPC)
+            {
+                entityBehaviour.currentState = EntityBehaviour.FSMState.Patrol;
+            }
         }
     }
 
