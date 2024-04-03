@@ -8,18 +8,16 @@ public class LevelManager : MonoBehaviour
 {
     //todo: make static to prevent LevelManager instance retrieval
     public ObjectiveType objType;
-
     public Objective objective;
+
+    public static bool isGameOver = false;
 
     public int objectiveTargetCount = 10;
     public float levelDuration = 10f;
     float countDown;
-    public static bool isGameOver = false;
     public AudioClip gameOverSFX;
     public AudioClip gameWonSFX;
-
     public string nextLevel;
-
     public float money = 0;
 
     UIController ui;
@@ -109,8 +107,7 @@ public class LevelManager : MonoBehaviour
         }
 
     }
-
-
+    
     void LoadCurrentLevel() {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
