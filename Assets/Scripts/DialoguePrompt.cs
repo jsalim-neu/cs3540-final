@@ -5,12 +5,13 @@ using UnityEngine.UI;
 
 public class DialoguePrompt : MonoBehaviour
 {
-    public LevelManager levelManager;
     public Text promptTextLabel;
     public Text dialoguePopUp;
     public KeyCode promptKey;
     public string promptText;
     public bool requiredToProgress = false;
+
+    public GameObject nextDialogueObject;
 
     public enum InteractableEnityType
     {
@@ -34,6 +35,7 @@ public class DialoguePrompt : MonoBehaviour
         {
             entityBehaviour = GetComponent<EntityBehaviour>();
         }
+
     }
 
     void Update()
@@ -60,6 +62,7 @@ public class DialoguePrompt : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             promptTextLabel.gameObject.SetActive(true);
+            promptTextLabel.text = promptText;
             canActivateDialogue = true;
 
             if (interactableType == InteractableEnityType.NPC)
@@ -87,6 +90,7 @@ public class DialoguePrompt : MonoBehaviour
 
     void DisplayDialogue()
     {
+        Debug.Log("Displaying Dialogue!");
         promptTextLabel.gameObject.SetActive(false);
         dialoguePopUp.gameObject.SetActive(true);
         dialoguePopUp.text = dialogueScript.RunDialogue();
@@ -96,7 +100,9 @@ public class DialoguePrompt : MonoBehaviour
             ExitDialogue();
             if (requiredToProgress)
             {
-                levelManager.objective.ObjectiveUpdate(ObjectiveType.INTERACTION, 1);
+                LevelManager.currObjective.ObjectiveUpdate(ObjectiveType.INTERACTION, 1);
+                //no longer allow this dialogue to progress the story
+                requiredToProgress = false;
             }
         }
     }
@@ -106,5 +112,9 @@ public class DialoguePrompt : MonoBehaviour
         dialoguePopUp.gameObject.SetActive(false);
         dialogueScript.ResetDialogue();
         isDialogueRunning = false;
+        if (nextDialogueObject != null)
+        {
+            nextDialogueObject.GetComponent<Collider>().enabled = true;
+        }
     }
 }

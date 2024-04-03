@@ -37,11 +37,9 @@ public class CoinBehavior : MonoBehaviour
 
             gameObject.GetComponent<Animator>().SetTrigger("coinCollected");
 
-            levelManager.money += scoreValue;
+            LevelManager.money += scoreValue;
 
-            levelManager.objective.ObjectiveUpdate(ObjectiveType.MONEY, (int)scoreValue);
-
-            Debug.Log("SCORE: " + levelManager.money);
+            LevelManager.currObjective.ObjectiveUpdate(ObjectiveType.MONEY, (int)scoreValue);
             
             AudioSource.PlayClipAtPoint(pickupSFX, Camera.main.transform.position);
 

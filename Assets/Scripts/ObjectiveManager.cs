@@ -40,6 +40,9 @@ public abstract class Objective
     //goal number of "objective points"
     public int objectiveCountGoal {get; set;}
 
+    //descriptor of objective for UI
+    public string objectiveText {get; set;}
+
     //update objective count (if the event is of the correct type)
     public void ObjectiveUpdate(ObjectiveType type, int objectiveChange)
     {
@@ -66,7 +69,7 @@ public class MoneyObjective : Objective
         objType = ObjectiveType.MONEY;
         objectiveCounter = 0;
         objectiveCountGoal = goalMoney;
-        Debug.Log(objectiveCounter + ", " + objectiveCountGoal);
+        objectiveText = "";
     }
 
     //if money is gained, increase objective count by that number
@@ -84,14 +87,16 @@ public class InteractObjective : Objective
         objType = ObjectiveType.INTERACTION;
         objectiveCounter = 0;
         objectiveCountGoal = 1;
+        objectiveText = "";
     }
 
     //constructor with multiple interactables
-    public InteractObjective(int objectiveCountGoal)
+    public InteractObjective(int goal, string text)
     {
         objType = ObjectiveType.INTERACTION;
         objectiveCounter = 0;
-        objectiveCountGoal = objectiveCountGoal;
+        objectiveCountGoal = goal;
+        objectiveText = text;
     }
 
 

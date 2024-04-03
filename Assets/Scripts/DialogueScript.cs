@@ -31,6 +31,6 @@ public class DialogueScript : MonoBehaviour
     public void ResetDialogue()
     {
         index = 0;
-        //isComplete = false;
+        isComplete = false;
     }
 }

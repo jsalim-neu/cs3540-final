@@ -10,7 +10,7 @@ public class EntityBehaviour : MonoBehaviour
     {
         Idle,
         Patrol,
-        Attack,
+        SeePlayer,
         Dead
     }
 
@@ -18,10 +18,13 @@ public class EntityBehaviour : MonoBehaviour
 
     NavMeshAgent agent;
 
+    Vector3 originalPos;
+
     void Start()
     {
         currentState = FSMState.Patrol;
         agent = GetComponent<NavMeshAgent>();
+        originalPos = transform.position;
     }
 
     void Update()
@@ -34,8 +37,8 @@ public class EntityBehaviour : MonoBehaviour
             case FSMState.Patrol:
                 UpdatePatrolState();
                 break;
-            case FSMState.Attack:
-                UpdateAttackState();
+            case FSMState.SeePlayer:
+                UpdateSeePlayerState();
                 break;
             case FSMState.Dead:
                 UpdateDeadState();
@@ -59,7 +62,7 @@ public class EntityBehaviour : MonoBehaviour
         }
     }
 
-    void UpdateAttackState()
+    void UpdateSeePlayerState()
     {}
 
     void UpdateDeadState() {}
@@ -67,7 +70,7 @@ public class EntityBehaviour : MonoBehaviour
     // Find a random point within the NavMesh and set it as the destination
     void WanderAround()
     {
-        Vector3 randomPos = Random.insideUnitSphere * 10;
+        Vector3 randomPos = Random.insideUnitSphere * 10 + originalPos;
         NavMeshHit hit;
         NavMesh.SamplePosition(randomPos, out hit, 10, 1);
         agent.SetDestination(hit.position);

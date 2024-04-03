@@ -4,21 +4,30 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+[System.Serializable]
+public class ObjectiveParam
+{
+    public ObjectiveType oType;
+    public int oCount;
+    public string oText;
+}
 public class LevelManager : MonoBehaviour
 {
-    //todo: make static to prevent LevelManager instance retrieval
-    public ObjectiveType objType;
-    public Objective objective;
+    public ObjectiveParam[] objectiveParams;
 
-    public static bool isGameOver = false;
+    static List<Objective> objectiveList = new List<Objective>();
 
-    public int objectiveTargetCount = 10;
+    public static Objective currObjective;
+
     public float levelDuration = 10f;
     float countDown;
+    public static bool isGameOver = false;
     public AudioClip gameOverSFX;
     public AudioClip gameWonSFX;
+
     public string nextLevel;
-    public float money = 0;
+
+    public static float money = 0;
 
     UIController ui;
 
@@ -30,7 +39,8 @@ public class LevelManager : MonoBehaviour
         //gameText.gameObject.SetActive(false);
         ui = GameObject.FindWithTag("UI").GetComponent<UIController>();
         ui.SetTimerText(countDown);
-        SetObjective();
+        initObjectiveList();
+        SetCurrentObjective();
     }
 
     // Update is called once per frame
@@ -38,15 +48,18 @@ public class LevelManager : MonoBehaviour
     {
         if (!isGameOver)
         {
-            if (objective.CheckAchieved())
+            
+            if (currObjective.CheckAchieved())
             {
-                Debug.Log(objective.objectiveCounter + ", " + objective.objectiveCountGoal);
-                LevelBeat();
+                Debug.Log("Objective Achieved!");
+                SetCurrentObjective();
             }
+
 
             if (countDown > 0)
             {
                 countDown -= Time.deltaTime;
+                SetObjectiveText();
             }
             else
             {
@@ -59,19 +72,70 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public void SetObjective()
+    private void initObjectiveList()
     {
-        switch (objType)
+        Debug.Log("Calling initObjList!");
+        
+        foreach (ObjectiveParam op in objectiveParams)
+        {
+            switch (op.oType)
+            {
+                case ObjectiveType.MONEY:
+                    objectiveList.Add(new MoneyObjective(op.oCount));
+                    break;
+                case ObjectiveType.INTERACTION:
+                    objectiveList.Add(new InteractObjective(op.oCount, op.oText));
+                    break;
+                default:
+                    break;
+            }
+            
+        }
+        
+    }
+
+    void SetCurrentObjective()
+    {
+        if (objectiveList.Count > 0)
+        {
+            //pop first objective out of list and into current objectives
+            currObjective = objectiveList[0];
+            objectiveList.RemoveAt(0);
+            Debug.Log("NEW OBJECTIVE OF TYPE: " + currObjective.objType);
+            SetObjectiveText();
+        }
+        else 
+        {
+            //all objectives complete, so level is complete!
+            LevelBeat();
+        }
+        /*
+            switch (objType)
+            {
+                case ObjectiveType.MONEY:
+                    objective = new MoneyObjective(objectiveTargetCount);
+                    ui.SetGameText("Objective: Collect $" + objectiveTargetCount + ".");
+                    Debug.Log("GOAL: MONEY");
+                    break;
+                default:
+                    objective = new InteractObjective();
+                    ui.SetGameText("Objective: Enter the Krusty Krab.");
+                    Debug.Log("GOAL: ENTER");
+                    break;
+            }
+        */
+    }
+
+    void SetObjectiveText() 
+    {
+        switch (currObjective.objType)
         {
             case ObjectiveType.MONEY:
-                objective = new MoneyObjective(objectiveTargetCount);
-                ui.SetGameText("Objective: Collect $" + objectiveTargetCount + ".");
-                Debug.Log("GOAL: MONEY");
+                ui.SetGameText("Objective: Collect " + currObjective.objectiveCountGoal + 
+                    " doubloons. (" + currObjective.objectiveCounter + "/" + currObjective.objectiveCountGoal +")");
                 break;
-            default:
-                objective = new InteractObjective();
-                ui.SetGameText("Objective: Enter the Krusty Krab.");
-                Debug.Log("GOAL: ENTER");
+            case ObjectiveType.INTERACTION:
+                ui.SetGameText("Objective: " + currObjective.objectiveText);
                 break;
         }
     }
@@ -80,7 +144,7 @@ public class LevelManager : MonoBehaviour
     public void LevelLost()
     {
         isGameOver = true;
-        ui.SetGameText("You Lost!");
+        ui.SetGameText("Game over!");
 
         if (gameOverSFX != null) {
             Camera.main.GetComponent<AudioSource>().pitch = 0.5f;
@@ -93,7 +157,7 @@ public class LevelManager : MonoBehaviour
     public void LevelBeat()
     {
         isGameOver = true;
-        ui.SetGameText("You Won!");
+        ui.SetGameText("Level complete!");
     
         if (gameWonSFX != null) {
             Camera.main.GetComponent<AudioSource>().pitch = 1;
@@ -105,7 +169,8 @@ public class LevelManager : MonoBehaviour
         }
 
     }
-    
+
+
     void LoadCurrentLevel() {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
