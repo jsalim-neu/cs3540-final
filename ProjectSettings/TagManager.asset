@@ -15,6 +15,7 @@ TagManager:
   - Gunpoint
   - LevelManager
   - UI
+  - Shop
   layers:
   - Default
   - TransparentFX

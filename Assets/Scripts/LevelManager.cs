@@ -27,7 +27,7 @@ public class LevelManager : MonoBehaviour
 
     public string nextLevel;
 
-    public static float money = 0;
+    public static float money = 5;
 
     UIController ui;
 
@@ -66,7 +66,7 @@ public class LevelManager : MonoBehaviour
                 countDown = 0;
                 LevelLost();
             }
-
+            ui.CheckSlidersActive();
             ui.SetTimerText(countDown);
             ui.SetScoreText(money);
         }
