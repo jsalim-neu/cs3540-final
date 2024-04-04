@@ -20,11 +20,19 @@ public class EntityBehaviour : MonoBehaviour
 
     Vector3 originalPos;
 
+    Animator anim;
+
     void Start()
     {
         currentState = FSMState.Patrol;
         agent = GetComponent<NavMeshAgent>();
         originalPos = transform.position;
+        if (player == null)
+        {
+            player = GameObject.FindWithTag("Player").transform;
+        }
+        anim = GetComponentInChildren<Animator>();
+        anim.SetInteger("animState", 0);
     }
 
     void Update()
@@ -50,20 +58,35 @@ public class EntityBehaviour : MonoBehaviour
     void UpdateIdleState()
     {
         agent.isStopped = true;
+        anim.SetInteger("animState", 0);
     }
 
     void UpdatePatrolState()
     {
         agent.isStopped = false;
+        anim.SetInteger("animState", 1);
 
         if (agent.remainingDistance < 0.5f)
         {
             WanderAround();
         }
+
+        if (Vector3.Distance(player.position, transform.position) <= 5f)
+        {
+            currentState = FSMState.SeePlayer;
+        }
+        else {Debug.Log(Vector3.Distance(player.position, transform.position));}
     }
 
     void UpdateSeePlayerState()
-    {}
+    {
+        agent.isStopped = true;
+        anim.SetInteger("animState", 2);
+        if (Vector3.Distance(player.position, transform.position) >= 10f)
+        {
+            currentState = FSMState.Patrol;
+        }
+    }
 
     void UpdateDeadState() {}
 

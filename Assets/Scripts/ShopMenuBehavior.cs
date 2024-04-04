@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class ShopMenuBehavior : MonoBehaviour
 {
+    public AudioClip openShopSFX, buySFX, buyFailSFX;
     public static bool isGamePaused = false;
 
     public GameObject pauseMenu;
@@ -41,6 +42,8 @@ public class ShopMenuBehavior : MonoBehaviour
         isGamePaused = true;
         Time.timeScale = 0f;
         pauseMenu.SetActive(true);
+        PlayClipAtCamera(openShopSFX);
+
     }
 
     public void BuyHoming()
@@ -48,15 +51,19 @@ public class ShopMenuBehavior : MonoBehaviour
         if (FlagManager.playerHasHoming)
         {
             Debug.Log("Player has homing projectiles already!");
+            PlayClipAtCamera(buyFailSFX);
         }
         else if (LevelManager.money < homingPrice)
         {
             Debug.Log("Player can't afford homing projectiles!");
+            PlayClipAtCamera(buyFailSFX);
         }
         else 
         {
             LevelManager.money -= homingPrice;
             FlagManager.playerHasHoming = true;
+            PlayClipAtCamera(buySFX);
+
         }
     }
 
@@ -65,15 +72,19 @@ public class ShopMenuBehavior : MonoBehaviour
         if (FlagManager.playerHasGrenades)
         {
             Debug.Log("Player has grenades already!");
+            PlayClipAtCamera(buyFailSFX);
         }
         else if (LevelManager.money < grenadePrice)
         {
             Debug.Log("Player can't afford grenades!");
+            PlayClipAtCamera(buyFailSFX);
         }
         else 
         {
             LevelManager.money -= grenadePrice;
             FlagManager.playerHasGrenades = true;
+            PlayClipAtCamera(buySFX);
+
         }
     }
 
@@ -82,16 +93,24 @@ public class ShopMenuBehavior : MonoBehaviour
         if (FlagManager.playerHasPulse)
         {
             Debug.Log("Player has pulse already!");
+            PlayClipAtCamera(buyFailSFX);
         }
         else if (LevelManager.money < pulsePrice)
         {
             Debug.Log("Player can't afford pulse!");
+            PlayClipAtCamera(buyFailSFX);
         }
         else 
         {
             LevelManager.money -= pulsePrice;
             FlagManager.playerHasPulse = true;
+            PlayClipAtCamera(buySFX);
         }
+    }
+
+    void PlayClipAtCamera(AudioClip clip)
+    {
+        Camera.main.GetComponent<AudioSource>().PlayOneShot(clip);
     }
 
 
