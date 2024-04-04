@@ -90,7 +90,8 @@ public class EnemyHealth : MonoBehaviour
 
         //destroy bullet
         Destroy(other);
-        float currentSpeed = agent.speed;
+        //stop movement
+        agent.isStopped = true;
 
         //check whether enemy dies
         if (currentHealth <= 0)
@@ -101,12 +102,12 @@ public class EnemyHealth : MonoBehaviour
         {
             //play hit animation
             gameObject.GetComponent<Animator>().SetTrigger("fishHit");
-            agent.speed = 0;
             
         }
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.3f);
         isGettingHit = false;
-        agent.speed = currentSpeed;
+        //restart movement
+        agent.isStopped = false;
     }
 
     private void Die()
