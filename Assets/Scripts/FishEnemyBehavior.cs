@@ -9,7 +9,7 @@ public class FishEnemyBehavior : MonoBehaviour
     //movement, player detection vars
     public Transform player;
     public float moveSpeed = 5f;
-
+    public int damageAmount = 1;
     public float detectionRadius = 10f;
 
     bool isAggro;
@@ -58,6 +58,15 @@ public class FishEnemyBehavior : MonoBehaviour
         }
         else {
             agent.enabled = false;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            var playerHealth = other.GetComponent<PlayerHealth>();
+            playerHealth.TakeDamage(damageAmount);
         }
     }
 
