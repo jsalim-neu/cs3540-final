@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311947, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4019,7 +4019,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6961854119965240234, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6961854119965240234, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5937,7 +5937,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6961854119965240234, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6961854119965240234, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7088,7 +7088,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6961854119965240234, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6961854119965240234, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -8171,7 +8171,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6961854119965240234, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6961854119965240234, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -9470,8 +9470,8 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 390e7a99cb0560f49a1dd255b0e3b819, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
+  m_Volume: 0.366
+  m_Pitch: 0.5
   Loop: 1
   Mute: 0
   Spatialize: 0
@@ -13241,7 +13241,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6961854119965240234, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6961854119965240234, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -13464,7 +13464,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6961854119965240234, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6961854119965240234, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -16759,7 +16759,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6961854119965240234, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6961854119965240234, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -18102,7 +18102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6961854119965240234, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6961854119965240234, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -18757,7 +18757,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6961854119965240234, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6961854119965240234, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -22299,7 +22299,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6961854119965240234, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6961854119965240234, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}
       propertyPath: m_LocalPosition.z
