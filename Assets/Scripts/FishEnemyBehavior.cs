@@ -32,6 +32,7 @@ public class FishEnemyBehavior : MonoBehaviour
 
         agent = GetComponent<NavMeshAgent>();
         agent.stoppingDistance = 0;
+        agent.speed = moveSpeed;
 
         transform.position = new Vector3(transform.position.x, bulletHeight, transform.position.z);
         
@@ -51,6 +52,12 @@ public class FishEnemyBehavior : MonoBehaviour
             if (isAggro && !enemyHealth.isGettingHit && !enemyHealth.isDead) {
                 FollowPlayer();
             }
+            if (enemyHealth.isGettingHit) {
+                fishLookAt();
+            }
+        }
+        else {
+            agent.enabled = false;
         }
     }
 

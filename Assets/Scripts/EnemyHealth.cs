@@ -8,6 +8,8 @@ public class EnemyHealth : MonoBehaviour
     public AudioClip hurtSFX, deathSFX;
     public Slider healthSlider;
 
+    UnityEngine.AI.NavMeshAgent agent;
+
     Transform enemyHUD_Transform;
 
     // health/state handler vars
@@ -35,6 +37,8 @@ public class EnemyHealth : MonoBehaviour
         healthSlider.value = currentHealth;
         itemParent = GameObject.FindGameObjectWithTag("PickupParent");
         enemyHUD_Transform = transform.GetChild(0);
+        agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+
 
         isDead = false;
         isGettingHit = false;
@@ -86,6 +90,7 @@ public class EnemyHealth : MonoBehaviour
 
         //destroy bullet
         Destroy(other);
+        float currentSpeed = agent.speed;
 
         //check whether enemy dies
         if (currentHealth <= 0)
@@ -96,11 +101,12 @@ public class EnemyHealth : MonoBehaviour
         {
             //play hit animation
             gameObject.GetComponent<Animator>().SetTrigger("fishHit");
-
+            agent.speed = 0;
             
         }
         yield return new WaitForSeconds(0.25f);
         isGettingHit = false;
+        agent.speed = currentSpeed;
     }
 
     private void Die()
