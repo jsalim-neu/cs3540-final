@@ -173,7 +173,7 @@ MonoBehaviour:
   isDead: 0
   maxHealth: 3
   itemDrop: {fileID: 3129200342344496425, guid: 3e29573f06c0a7e4fa986fff41de17af, type: 3}
-  dropChance: 1
+  dropChance: 0.5
 --- !u!65 &1040575005011637667
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -27,7 +27,7 @@ public class LevelManager : MonoBehaviour
 
     public string nextLevel;
 
-    public static float money = 5;
+    public static float money = 3;
 
     UIController ui;
 
