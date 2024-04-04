@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class ShopMenuBehavior : MonoBehaviour
 {
@@ -11,7 +12,9 @@ public class ShopMenuBehavior : MonoBehaviour
 
     public GameObject pauseMenu;
 
-    public static int homingPrice = 2, grenadePrice = 4, pulsePrice = 6;
+    public static int homingPrice = 4, grenadePrice = 6, pulsePrice = 8;
+
+    [SerializeField] public TextMeshProUGUI moneyText;
 
     void Start()
     {
@@ -20,13 +23,11 @@ public class ShopMenuBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (isGamePaused & Input.GetKeyDown(KeyCode.Escape))
         {
-            if (isGamePaused)
-            {
-                ResumeGame();
-            }
+            ResumeGame();
         }
+        moneyText.text = "$" + LevelManager.money;
 
     }
 
