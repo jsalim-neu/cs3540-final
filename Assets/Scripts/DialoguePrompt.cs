@@ -11,6 +11,8 @@ public class DialoguePrompt : MonoBehaviour
     public string promptText;
     public bool requiredToProgress = false;
 
+    public bool isMerchant = false;
+
     public GameObject nextDialogueObject;
 
     public enum InteractableEnityType
@@ -103,6 +105,11 @@ public class DialoguePrompt : MonoBehaviour
                 LevelManager.currObjective.ObjectiveUpdate(ObjectiveType.INTERACTION, 1);
                 //no longer allow this dialogue to progress the story
                 requiredToProgress = false;
+            }
+            if (isMerchant)
+            {
+            //open shop menu
+            GameObject.FindWithTag("Shop").GetComponent<ShopMenuBehavior>().OpenShop();
             }
         }
     }

@@ -27,16 +27,11 @@ public class UIController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-        //check whether player has powerups; if so, activates that powerup slider 
-        homingSlider.enabled = FlagManager.playerHasHoming;
-        grenadeSlider.enabled = FlagManager.playerHasGrenades;
-        pulseSlider.enabled = FlagManager.playerHasPulse;
     }
 
     public void SetSlider(UISlider whichSlider, float value)
@@ -76,5 +71,13 @@ public class UIController : MonoBehaviour
     public void SetGameText(string message)
     {
         gameText.text = message;
+    }
+
+    public void CheckSlidersActive()
+    {
+        //check whether player has powerups; if so, activates that powerup slider 
+        homingSlider.gameObject.SetActive(FlagManager.playerHasHoming);
+        grenadeSlider.gameObject.SetActive(FlagManager.playerHasGrenades);
+        pulseSlider.gameObject.SetActive(FlagManager.playerHasPulse);
     }
 }

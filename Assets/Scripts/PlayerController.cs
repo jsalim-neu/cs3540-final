@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         FishEnemyBehavior.bulletHeight = gunPoint.transform.position.y;
-        if (!LevelManager.isGameOver)
+        if (!LevelManager.isGameOver & !ShopMenuBehavior.isGamePaused)
         {
             RotateWithMouse();
 
