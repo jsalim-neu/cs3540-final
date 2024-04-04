@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class FishEnemyBehavior : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class FishEnemyBehavior : MonoBehaviour
 
     public EnemyHealth enemyHealth;
 
+    NavMeshAgent agent;
+
     void Start()
     {
         if (player == null)
@@ -26,6 +29,9 @@ public class FishEnemyBehavior : MonoBehaviour
         isAggro = false;
 
         enemyHealth = GetComponent<EnemyHealth>();
+
+        agent = GetComponent<NavMeshAgent>();
+        agent.stoppingDistance = 0;
 
         transform.position = new Vector3(transform.position.x, bulletHeight, transform.position.z);
         
@@ -49,20 +55,24 @@ public class FishEnemyBehavior : MonoBehaviour
     }
 
     void FollowPlayer() {
-        // turn to face player
-        fishLookAt();
-        
+        // handle navmesh agent
+        agent.speed = moveSpeed;
+        agent.SetDestination(player.position);
+
         //swim towards player
-        Vector3 newPosition = Vector3.MoveTowards(
+        /*Vector3 newPosition = Vector3.MoveTowards(
             transform.position,
             player.position,
             moveSpeed * Time.deltaTime
-        );
+        ); */
+
+        // turn to face player
+        fishLookAt();
 
         //correct y-position
-        newPosition.y = bulletHeight;
+        transform.position = new Vector3(transform.position.x, bulletHeight, transform.position.z);
 
-        transform.position = newPosition;
+        //transform.position = newPosition;
     }
 
     private void fishLookAt()
