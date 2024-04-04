@@ -12,7 +12,7 @@ public class ShopMenuBehavior : MonoBehaviour
 
     public GameObject pauseMenu;
 
-    public static int homingPrice = 2, grenadePrice = 4, pulsePrice = 6;
+    public static int homingPrice = 4, grenadePrice = 6, pulsePrice = 8;
 
     [SerializeField] public TextMeshProUGUI moneyText;
 
