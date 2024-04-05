@@ -49,14 +49,6 @@ public class EnemyHealth : MonoBehaviour
         
     }
 
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.CompareTag("Bullet"))
-        {
-            StartCoroutine(GetHit(other.collider));
-        }
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Bullet") || other.CompareTag("Explosion"))
@@ -88,10 +80,12 @@ public class EnemyHealth : MonoBehaviour
         );
         healthSlider.value = currentHealth;
 
-        //destroy bullet
-        Destroy(other);
         //stop movement
         agent.isStopped = true;
+
+        //destroy bullet
+        Destroy(other);
+
 
         //check whether enemy dies
         if (currentHealth <= 0)
@@ -113,7 +107,10 @@ public class EnemyHealth : MonoBehaviour
     private void Die()
     {
         isDead = true;
-        GetComponent<Collider>().enabled = false;
+        foreach (Collider c in GetComponents<Collider>())
+        {
+            c.enabled = false;
+        }
         AudioSource.PlayClipAtPoint(
             deathSFX,
             Camera.main.transform.position

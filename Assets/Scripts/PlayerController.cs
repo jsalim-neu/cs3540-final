@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
     Plane groundPlane;
     ThrowableBehaviour tb;
     GameObject gunPoint;
-    CharacterController controller;
+    public CharacterController controller;
     PlayerAnimation animHandler;
 
     // Start is called before the first frame update

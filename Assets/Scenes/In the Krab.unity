@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311947, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -9960,9 +9960,9 @@ GameObject:
   m_Component:
   - component: {fileID: 940971309}
   - component: {fileID: 940971308}
-  - component: {fileID: 940971307}
   - component: {fileID: 940971306}
   - component: {fileID: 940971305}
+  - component: {fileID: 940971310}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -10074,21 +10074,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &940971307
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 940971304}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1547cd880a77074b8fa8e150ab33842, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cameraHeight: 15
-  isTopDown: 1
-  MouseCameraSensitivity: 1
 --- !u!20 &940971308
 Camera:
   m_ObjectHideFlags: 0
@@ -10155,6 +10140,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.071}
+--- !u!114 &940971310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 940971304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1547cd880a77074b8fa8e150ab33842, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraHeight: 14
+  isTopDown: 1
+  MouseCameraSensitivity: 1
 --- !u!1001 &942965631
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23478,6 +23478,7 @@ MonoBehaviour:
   dashSpeed: 20
   dashDuration: 0.4
   dashCooldown: 2
+  controller: {fileID: 0}
 --- !u!54 &2019780630
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -23537,7 +23538,7 @@ MonoBehaviour:
   jumpHeight: 10
   gravity: 9.81
   airControl: 10
-  cameraDistance: 13
+  cameraDistance: 10
 --- !u!114 &2019780636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23550,7 +23551,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c298ec32d0a83c5449cc1700f40f0ef1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 4031836183731681380, guid: 7b943f735f370480c9ea10968d7e5a43, type: 3}
+  bullet: {fileID: 0}
   bulletSpeed: 100
   timebetweenShots: 0.3
   canShoot: 1
