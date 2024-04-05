@@ -44,10 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8be1f16e3366ee4e89e3769d53fd678, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objType: 0
-  objectiveTargetCount: 10
+  objectiveParams: []
   levelDuration: 100
-  gameOverSFX: {fileID: 8300000, guid: 13f83433eb9630049a1dcb60b9ac08e8, type: 3}
-  gameWonSFX: {fileID: 8300000, guid: 5457db11a05cfaa4e88547e1b41a2b7f, type: 3}
+  gameOverSFX: {fileID: 8300000, guid: 815fc7f7f7565dd42ac8f6b02ead148a, type: 3}
+  gameWonSFX: {fileID: 8300000, guid: 74b499c1ae6a2f14ba8af50154c23842, type: 3}
   nextLevel: 
-  money: 0

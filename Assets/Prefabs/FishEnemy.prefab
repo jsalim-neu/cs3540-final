@@ -15,8 +15,9 @@ GameObject:
   - component: {fileID: 741178466077394306}
   - component: {fileID: -1753965184321888094}
   - component: {fileID: 8898627255084317729}
-  - component: {fileID: 1040575005011637667}
   - component: {fileID: 1773514733718241131}
+  - component: {fileID: -6062395542626542939}
+  - component: {fileID: -1362318880001634553}
   m_Layer: 0
   m_Name: FishEnemy
   m_TagString: Enemy
@@ -102,6 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d76ccb379309c0a41bb8cb16e2fa9f28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerHitSFX: {fileID: 8300000, guid: a066abe16feee4b42844049cb7487ef1, type: 3}
   player: {fileID: 0}
   moveSpeed: 5
   damageAmount: 1
@@ -167,15 +169,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa92c56513ff2c94fbd5042ad8d4f9af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hurtSFX: {fileID: 8300000, guid: eec961d9965b09c468aa1b0cdaa1bce5, type: 3}
-  deathSFX: {fileID: 8300000, guid: 13f83433eb9630049a1dcb60b9ac08e8, type: 3}
+  hurtSFX: {fileID: 8300000, guid: fd68bcf807a46474c9d4b4e9ef42b37f, type: 3}
+  deathSFX: {fileID: 8300000, guid: 690e6955f3e5d734198d49cb33fe253b, type: 3}
   healthSlider: {fileID: 6975147274945193680}
   isGettingHit: 0
   isDead: 0
   maxHealth: 3
   itemDrop: {fileID: 3129200342344496425, guid: 3e29573f06c0a7e4fa986fff41de17af, type: 3}
   dropChance: 0.5
---- !u!65 &1040575005011637667
+--- !u!195 &1773514733718241131
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7770584863604633872}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 0
+  m_AutoRepath: 1
+  m_Height: 1
+  m_BaseOffset: 0.4
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!65 &-6062395542626542939
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7770584863604633872}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.8431362, y: 0.35, z: 0.13835584}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &-1362318880001634553
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -194,30 +239,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.8431362, y: 0.35, z: 0.13835584}
-  m_Center: {x: 0.02699241, y: -0.026563115, z: 0}
---- !u!195 &1773514733718241131
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7770584863604633872}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 1
-  m_BaseOffset: 0.4
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_Size: {x: 1, y: 0.5, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &7742975603537332397
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -119,8 +119,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4882e0e02594bd047ba09c4d6a42b353, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelManager: {fileID: 0}
   scoreValue: 1
-  pickupSFX: {fileID: 8300000, guid: f03af03b0fb33ef41967e4cb01936cf9, type: 3}
+  pickupSFX: {fileID: 8300000, guid: 19ce2a4e97dd8b040a76dbde6a4dfc03, type: 3}
 --- !u!95 &2988949186453681815
 Animator:
   serializedVersion: 5

@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Pulse
-  m_Shader: {fileID: 4800000, guid: ca4a33f7306a0b540a460abcc1f261f5, type: 3}
+  m_Shader: {fileID: 4800000, guid: eaf4ce0c0c41cd042845c21e6e7fdbd5, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
