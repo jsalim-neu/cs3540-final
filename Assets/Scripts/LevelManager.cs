@@ -75,6 +75,8 @@ public class LevelManager : MonoBehaviour
     private void initObjectiveList()
     {
         Debug.Log("Calling initObjList!");
+
+        objectiveList = new List<Objective>();
         
         foreach (ObjectiveParam op in objectiveParams)
         {
