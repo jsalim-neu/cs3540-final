@@ -20,6 +20,9 @@ public class PlayerController : MonoBehaviour
     float bulletRefresh, pulseRefresh;
 
     float dashTimeLeft = 0, dashRefresh = 0;
+    
+    Vector3 knockbackDirection; public float knockbackTimer = 0.75f;
+
 
     UIController ui;
 
@@ -32,6 +35,7 @@ public class PlayerController : MonoBehaviour
     Plane groundPlane;
     ThrowableBehaviour tb;
     GameObject gunPoint;
+
     public CharacterController controller;
     PlayerAnimation animHandler;
 
@@ -83,6 +87,7 @@ public class PlayerController : MonoBehaviour
                 StartDash();
             }
 
+
         }
 
         SetSliders();
@@ -97,7 +102,7 @@ public class PlayerController : MonoBehaviour
                 Vector3 moveDirection = input;
 
                 //set speed
-                if (Input.GetKey(KeyCode.LeftShift))
+                if (Input.GetKey(KeyCode.LeftShift) & knockbackTimer <= 0)
                 {
                     playerSpeed = 10f;
                     animHandler.isRunning = true;
@@ -106,6 +111,14 @@ public class PlayerController : MonoBehaviour
                 {
                     playerSpeed = 5f;
                     animHandler.isRunning = false;
+                }
+
+                if (knockbackTimer > 0)
+                {
+                    //hijack player movement to get knocked back
+                    moveDirection = knockbackDirection * (knockbackTimer * 10f);
+                    knockbackTimer -= Time.deltaTime;
+                    knockbackTimer = Mathf.Clamp(knockbackTimer,0, 100);
                 }
 
                 moveDirection *= playerSpeed;
@@ -135,7 +148,6 @@ public class PlayerController : MonoBehaviour
                 animHandler.SetMoveDirection(input.normalized);
 
             }
-            //Debug.Log("Dash time left: " + dashTimeLeft + "; dash refresh: " + dashRefresh);
 
         }
 
@@ -357,5 +369,14 @@ public class PlayerController : MonoBehaviour
             ui.SetSlider(UISlider.HOMING, (bulletCooldown - bulletRefresh)/bulletCooldown);
             ui.SetSlider(UISlider.GRENADE, (bulletCooldown - bulletRefresh)/bulletCooldown);
             ui.SetSlider(UISlider.PULSE, (pulseCooldown - pulseRefresh)/pulseCooldown);
+        }
+
+        public void Knockback(Vector3 moveDirection, float knockbackTime = 0.5f)
+        {
+            Debug.Log("Starting knockback in playercontroller");
+            knockbackTimer = knockbackTime;
+            knockbackDirection = moveDirection;
+
+            
         }
     }

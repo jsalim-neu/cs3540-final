@@ -44,10 +44,6 @@ public class EnemyHealth : MonoBehaviour
         isGettingHit = false;
     }
 
-    void Update()
-    {
-        
-    }
 
     private void OnTriggerEnter(Collider other)
     {
