@@ -11,6 +11,7 @@ public class EntityBehaviour : MonoBehaviour
         Idle,
         Patrol,
         SeePlayer,
+        Talk,
         Dead
     }
 
@@ -48,6 +49,9 @@ public class EntityBehaviour : MonoBehaviour
             case FSMState.SeePlayer:
                 UpdateSeePlayerState();
                 break;
+            case FSMState.Talk:
+                UpdateTalkState();
+                break;
             case FSMState.Dead:
                 UpdateDeadState();
                 break;
@@ -80,12 +84,19 @@ public class EntityBehaviour : MonoBehaviour
 
     void UpdateSeePlayerState()
     {
+        Debug.Log(Vector3.Distance(player.position, transform.position));
         agent.isStopped = true;
         anim.SetInteger("animState", 2);
         if (Vector3.Distance(player.position, transform.position) >= 10f)
         {
             currentState = FSMState.Patrol;
         }
+    }
+
+    void UpdateTalkState() 
+    {
+        agent.isStopped = true;
+        anim.SetInteger("animState", 3);
     }
 
     void UpdateDeadState() {}
