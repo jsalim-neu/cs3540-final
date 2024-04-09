@@ -84,7 +84,6 @@ public class DialoguePrompt : MonoBehaviour
 
             if (interactableType == InteractableEnityType.NPC)
             {
-                entityBehaviour.currentState = EntityBehaviour.FSMState.Idle;
                 print("Player in range");
             }
         }
@@ -108,6 +107,8 @@ public class DialoguePrompt : MonoBehaviour
     void DisplayDialogue()
     {
         Debug.Log("Displaying Dialogue!");
+        entityBehaviour.currentState = EntityBehaviour.FSMState.Talk;
+
         promptTextLabel.gameObject.SetActive(false);
         dialoguePopUp.gameObject.SetActive(true);
         dialoguePopUp.text = dialogueScript.RunDialogue();
