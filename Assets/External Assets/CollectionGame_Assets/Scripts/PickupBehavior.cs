@@ -25,11 +25,4 @@ public class PickupBehavior : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void OnDestroy()
-    {
-        if (!LevelManager.isGameOver)
-        {
-            
-        }
-    }
 }

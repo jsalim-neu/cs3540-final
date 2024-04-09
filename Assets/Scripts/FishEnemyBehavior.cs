@@ -95,18 +95,13 @@ public class FishEnemyBehavior : MonoBehaviour
     {
         var playerHealth = other.GetComponent<PlayerHealth>();
         playerHealth.TakeDamage(damageAmount);
-        var playerController = other.GetComponent<PlayerController>();
-        
+
         Vector3 moveDirection = (other.gameObject.transform.position - transform.position).normalized;
+        playerHealth.TriggerKnockback(moveDirection);
 
         AudioSource.PlayClipAtPoint(playerHitSFX, Camera.main.transform.position);
 
-        float knockbackTimer = 0.75f;
-        while (knockbackTimer >= 0)
-        {
-            playerController.controller.Move(moveDirection * Time.deltaTime * 5);
-            knockbackTimer -= Time.deltaTime;
-        }
+        
     }
 
     private void fishLookAt()

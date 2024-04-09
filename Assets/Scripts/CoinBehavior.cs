@@ -4,33 +4,20 @@ using UnityEngine;
 
 public class CoinBehavior : MonoBehaviour
 {
-    public LevelManager levelManager;
+    //allows for double-value coins
     public float scoreValue = 1f;
     public AudioClip pickupSFX;
-    public static int pickupCount = 0;
-
     Collider collider;
-
-
+    
     // Start is called before the first frame update
     void Start()
     {
-        pickupCount++;
         collider = GetComponent<SphereCollider>();
-        levelManager = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelManager>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (LevelManager.isGameOver) 
-        {
-            pickupCount = 0;
-        }
     }
 
     void OnTriggerEnter(Collider other)
     {
+        //if player triggers coin, destroy coin and add to player money
         if (other.CompareTag("Player")) 
         {
             collider.enabled = false;

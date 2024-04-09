@@ -3,16 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//
 public class DialoguePrompt : MonoBehaviour
 {
+    //how does the prompt show up in the overworld?
     public Text promptTextLabel;
+    
+    //actual text
     public Text dialoguePopUp;
+
+    //what key continues the dialogue?
     public KeyCode promptKey;
+
+    //
     public string promptText;
+
+    //triggers a level flag upon dialogue completion if true
     public bool requiredToProgress = false;
 
+    //opens shop prompt if true
     public bool isMerchant = false;
 
+    //refers to the "next" dialogue object in the level, makes it interactable if so 
     public GameObject nextDialogueObject;
 
     public enum InteractableEnityType
@@ -23,7 +35,10 @@ public class DialoguePrompt : MonoBehaviour
 
     public InteractableEnityType interactableType = InteractableEnityType.NPC;
 
+    //separate script object that contains the lines to be "said" (attached to same GameObject)
     DialogueScript dialogueScript;
+
+    //NPC/Object behavior script (attached to same GameObject)
     EntityBehaviour entityBehaviour;
     bool isDialogueRunning = false;
     bool canActivateDialogue = false;
@@ -102,6 +117,7 @@ public class DialoguePrompt : MonoBehaviour
             ExitDialogue();
             if (requiredToProgress)
             {
+                //send LevelManager an update to the objective
                 LevelManager.currObjective.ObjectiveUpdate(ObjectiveType.INTERACTION, 1);
                 //no longer allow this dialogue to progress the story
                 requiredToProgress = false;

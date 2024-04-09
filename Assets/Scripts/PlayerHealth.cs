@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class PlayerHealth : MonoBehaviour
 {
     public int startingHealth = 10;
+
+    PlayerController controller;
     //public AudioClip deadSFX;
     public Slider healthSlider;
     public LevelManager levelManager;
@@ -17,6 +19,7 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth = startingHealth;
         healthSlider.value = currentHealth;
+        controller = GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
@@ -37,6 +40,11 @@ public class PlayerHealth : MonoBehaviour
         {
             PlayerDies();
         }
+    }
+
+    public void TriggerKnockback(Vector3 moveDirection)
+    {
+        controller.Knockback(moveDirection);
     }
 
     public void TakeHealth(int healthAmount)
