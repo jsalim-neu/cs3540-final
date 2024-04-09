@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
     Plane groundPlane;
     ThrowableBehaviour tb;
     GameObject gunPoint;
+
     public CharacterController controller;
     PlayerAnimation animHandler;
 
@@ -86,7 +87,6 @@ public class PlayerController : MonoBehaviour
                 StartDash();
             }
 
-            Debug.Log(knockbackDirection);
 
         }
 
@@ -376,6 +376,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Starting knockback in playercontroller");
             knockbackTimer = knockbackTime;
             knockbackDirection = moveDirection;
+
             
         }
     }

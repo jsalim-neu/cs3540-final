@@ -21,6 +21,10 @@ public class FishEnemyBehavior : MonoBehaviour
 
     NavMeshAgent agent;
 
+    //set cooldown for attacking player to prevent double-taps and corner combos; 
+    //trigger collider is used to hurt player and thus will be deactivated for a short time afterward
+    Collider triggerCollider; public float collisionCooldown = 0.5f; float collisionTimer = 0;
+
     void Start()
     {
         if (player == null)
@@ -30,6 +34,7 @@ public class FishEnemyBehavior : MonoBehaviour
         isAggro = false;
 
         enemyHealth = GetComponent<EnemyHealth>();
+        triggerCollider = GetComponents<Collider>()[1];
 
         agent = GetComponent<NavMeshAgent>();
         agent.stoppingDistance = 0;
@@ -55,6 +60,14 @@ public class FishEnemyBehavior : MonoBehaviour
             }
             if (enemyHealth.isGettingHit) {
                 fishLookAt();
+            }
+            //if 
+            if (collisionTimer <= 0 & !enemyHealth.isDead)
+            {
+                triggerCollider.enabled = true;
+            }
+            else {
+                collisionTimer -= Time.deltaTime;
             }
         }
         else {
@@ -96,12 +109,15 @@ public class FishEnemyBehavior : MonoBehaviour
         var playerHealth = other.GetComponent<PlayerHealth>();
         playerHealth.TakeDamage(damageAmount);
 
+        //knockback wrapper is handled in PlayerHealth, which calls a function in PlayerController
         Vector3 moveDirection = (other.gameObject.transform.position - transform.position).normalized;
         playerHealth.TriggerKnockback(moveDirection);
 
         AudioSource.PlayClipAtPoint(playerHitSFX, Camera.main.transform.position);
 
-        
+        //deactivate player harming capabilities
+        triggerCollider.enabled = false;
+        collisionTimer = collisionCooldown;        
     }
 
     private void fishLookAt()
