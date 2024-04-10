@@ -79,12 +79,10 @@ public class EntityBehaviour : MonoBehaviour
         {
             currentState = FSMState.SeePlayer;
         }
-        else {Debug.Log(Vector3.Distance(player.position, transform.position));}
     }
 
     void UpdateSeePlayerState()
     {
-        Debug.Log(Vector3.Distance(player.position, transform.position));
         agent.isStopped = true;
         anim.SetInteger("animState", 2);
         if (Vector3.Distance(player.position, transform.position) >= 10f)

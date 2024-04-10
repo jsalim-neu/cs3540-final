@@ -97,7 +97,10 @@ public class EnemyHealth : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         isGettingHit = false;
         //restart movement
-        agent.isStopped = false;
+        if (currentHealth > 0)
+        {
+            agent.isStopped = false;
+        }
     }
 
     private void Die()
@@ -120,6 +123,7 @@ public class EnemyHealth : MonoBehaviour
             DropItem();
         }
         Destroy(gameObject, 0.75f);
+
 
     }
 

@@ -58,9 +58,7 @@ public class FishEnemyBehavior : MonoBehaviour
             if (isAggro && !enemyHealth.isGettingHit && !enemyHealth.isDead) {
                 FollowPlayer();
             }
-            if (enemyHealth.isGettingHit) {
-                fishLookAt();
-            }
+            fishLookAt();
             //if 
             if (collisionTimer <= 0 & !enemyHealth.isDead)
             {
@@ -80,28 +78,26 @@ public class FishEnemyBehavior : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             DamagePlayer(other);
+            if (enemyHealth.isGettingHit) {
+                fishLookAt();
+            }
+            //if 
+            if (collisionTimer <= 0 & !enemyHealth.isDead)
+            {
+                triggerCollider.enabled = true;
+            }
+            else {
+                collisionTimer -= Time.deltaTime;
+            }
         }
     }
+
 
     void FollowPlayer() {
         // handle navmesh agent
         agent.speed = moveSpeed;
         agent.SetDestination(player.position);
 
-        //swim towards player
-        /*Vector3 newPosition = Vector3.MoveTowards(
-            transform.position,
-            player.position,
-            moveSpeed * Time.deltaTime
-        ); */
-
-        // turn to face player
-        fishLookAt();
-
-        //correct y-position
-        transform.position = new Vector3(transform.position.x, bulletHeight, transform.position.z);
-
-        //transform.position = newPosition;
     }
 
     void DamagePlayer(Collider other)

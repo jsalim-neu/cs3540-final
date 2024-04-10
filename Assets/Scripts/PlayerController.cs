@@ -229,7 +229,12 @@ public class PlayerController : MonoBehaviour
 
             if (bulletClone.gameObject.tag == "Throwable")
             {
+                Debug.Log(controller.velocity);
                 bulletClone.GetComponent<ThrowableBehaviour>().TriggerThrowable();
+                //throw with more force, correct for player trajectory
+                rb.AddForce(
+                    transform.forward * speed * 0.75f + controller.velocity.normalized * 5, 
+                    ForceMode.VelocityChange);
                 Destroy(bulletClone, 10f);
             }
             else
@@ -294,39 +299,48 @@ public class PlayerController : MonoBehaviour
         {
             float time = 0;
             Transform tr = homingProjectile.transform;
+            //is the projectile locked on to the enemy?
+            bool lockedOn = false;
 
             while (homingProjectile != null)
             {
                 if (homingTarget != null)
                 {
-                    Quaternion toRotation = Quaternion.FromToRotation(transform.forward, homingTarget.transform.position - tr.position);
-                    tr.rotation = Quaternion.Slerp(
-                        tr.rotation,
-                        toRotation,
-                        time / duration
-                    );
-                }
+                    //go forward, turn toward target gradually
+                    Quaternion toRotation = Quaternion.FromToRotation(tr.forward, homingTarget.transform.position - tr.position);
+                    //if the angle between the homing trajectory and the target direction is close enough, lock on
+                    if (
+                        (Vector3.Angle(tr.forward, homingTarget.transform.position - tr.position) <= 7.5f)
+                        || Vector3.Distance(tr.position, homingTarget.transform.position) <= 3f)
+                    {
+                        lockedOn = true;
+                    }
 
-                if (homingTarget != null && time >= duration)
-                {
-                    // if the target is still alive, move directly to target
-                    tr.position = Vector3.MoveTowards(
-                        tr.position,
-                        homingTarget.transform.position,
-                        Time.deltaTime * bulletSpeed * 0.7f
-                    );
-                }
+                    if (lockedOn)
+                    {
+                        tr.LookAt(homingTarget.transform);
+                    }
+                    else {
+                        //rotation turns gradually toward enemy
+                        tr.rotation = Quaternion.Slerp(
+                            tr.rotation,
+                            toRotation,
+                            time / duration
+                        );
+                    }
 
-                else 
-                {
-                    // if the target is destroyed, let the projectile continue in the same direction
-                    tr.position = Vector3.MoveTowards(
-                        tr.position,
-                        tr.position + (tr.forward * 100),
-                        Time.deltaTime * bulletSpeed * 0.7f
-                    );
+                    if (time >= duration)
+                    {
+                        //lock on after a certain period
+                        lockedOn = true;
+                    }
                 }
-                //turn toward homing target
+                // if the target is destroyed, let the projectile continue in the same direction; otherwise, move in turned direction
+                tr.position = Vector3.MoveTowards(
+                    tr.position,
+                    tr.position + (tr.forward * 100),
+                    Time.deltaTime * bulletSpeed * 0.7f
+                );
                 
                 time += Time.deltaTime;
                 yield return null;
