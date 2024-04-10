@@ -52,4 +52,19 @@ public class BulletBehaviour : MonoBehaviour
         
     }
 
+    void OnTriggerEnter(Collider other)
+    {
+        //bullet destroys itself if it hits an enemy, deactivates otherwise
+        if (other.tag == "Enemy")
+        {
+            Destroy(gameObject);
+        }
+        else if (other.tag != "Player")
+        {
+            gameObject.SetActive(false);
+            //instantiate spark particle effect?
+        }
+        
+    }
+
 }

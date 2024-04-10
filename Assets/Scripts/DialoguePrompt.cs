@@ -107,7 +107,10 @@ public class DialoguePrompt : MonoBehaviour
     void DisplayDialogue()
     {
         Debug.Log("Displaying Dialogue!");
-        entityBehaviour.currentState = EntityBehaviour.FSMState.Talk;
+        if (interactableType == InteractableEnityType.NPC)
+        {
+            entityBehaviour.currentState = EntityBehaviour.FSMState.Patrol;
+        }
 
         promptTextLabel.gameObject.SetActive(false);
         dialoguePopUp.gameObject.SetActive(true);
