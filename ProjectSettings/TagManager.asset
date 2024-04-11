@@ -16,6 +16,7 @@ TagManager:
   - LevelManager
   - UI
   - Shop
+  - FadeImage
   layers:
   - Default
   - TransparentFX

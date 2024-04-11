@@ -11,7 +11,6 @@ public class DialoguePrompt : MonoBehaviour
     
     //actual text
     public Text dialoguePopUp;
-
     //what key continues the dialogue?
     public KeyCode promptKey;
 
@@ -106,6 +105,7 @@ public class DialoguePrompt : MonoBehaviour
 
     void DisplayDialogue()
     {
+        Time.timeScale = 0;
         Debug.Log("Displaying Dialogue!");
         if (interactableType == InteractableEnityType.NPC)
         {
@@ -115,6 +115,7 @@ public class DialoguePrompt : MonoBehaviour
         promptTextLabel.gameObject.SetActive(false);
         dialoguePopUp.gameObject.SetActive(true);
         dialoguePopUp.text = dialogueScript.RunDialogue();
+        EnableUI(false);
 
         if (dialogueScript.isComplete)
         {
@@ -136,12 +137,23 @@ public class DialoguePrompt : MonoBehaviour
 
     void ExitDialogue()
     {
+        Time.timeScale = 1;
         dialoguePopUp.gameObject.SetActive(false);
         dialogueScript.ResetDialogue();
         isDialogueRunning = false;
+        EnableUI(true);
+
         if (nextDialogueObject != null)
         {
             nextDialogueObject.GetComponent<Collider>().enabled = true;
+        }
+    }
+
+    void EnableUI(bool isEnabled)
+    {
+        if (playerStatePanel)
+        {
+            playerStatePanel.SetActive(isEnabled);
         }
     }
 }
