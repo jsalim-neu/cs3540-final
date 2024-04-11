@@ -7,6 +7,9 @@ public class DialoguePrompt : MonoBehaviour
 {
     public Text promptTextLabel;
     public Text dialoguePopUp;
+
+    public GameObject playerStatePanel;
+
     public KeyCode promptKey;
     public string promptText;
     public bool requiredToProgress = false;
@@ -92,10 +95,12 @@ public class DialoguePrompt : MonoBehaviour
 
     void DisplayDialogue()
     {
+        Time.timeScale = 0;
         Debug.Log("Displaying Dialogue!");
         promptTextLabel.gameObject.SetActive(false);
         dialoguePopUp.gameObject.SetActive(true);
         dialoguePopUp.text = dialogueScript.RunDialogue();
+        EnableUI(false);
 
         if (dialogueScript.isComplete)
         {
@@ -116,12 +121,23 @@ public class DialoguePrompt : MonoBehaviour
 
     void ExitDialogue()
     {
+        Time.timeScale = 1;
         dialoguePopUp.gameObject.SetActive(false);
         dialogueScript.ResetDialogue();
         isDialogueRunning = false;
+        EnableUI(true);
+
         if (nextDialogueObject != null)
         {
             nextDialogueObject.GetComponent<Collider>().enabled = true;
+        }
+    }
+
+    void EnableUI(bool isEnabled)
+    {
+        if (playerStatePanel)
+        {
+            playerStatePanel.SetActive(isEnabled);
         }
     }
 }

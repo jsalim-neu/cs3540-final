@@ -75,7 +75,9 @@ public class EntityBehaviour : MonoBehaviour
         {
             currentState = FSMState.SeePlayer;
         }
-        else {Debug.Log(Vector3.Distance(player.position, transform.position));}
+        else {
+            //Debug.Log(Vector3.Distance(player.position, transform.position));
+        }
     }
 
     void UpdateSeePlayerState()

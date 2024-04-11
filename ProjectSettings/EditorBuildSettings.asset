@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/_MainMenu.unity
+    guid: e627a86dcaad8fb489d31ea1ab6ce66c
+  - enabled: 1
     path: Assets/Scenes/KrabOutside.unity
     guid: 84c2f9cc4bdf153479cbf040bfe87ad2
   - enabled: 1

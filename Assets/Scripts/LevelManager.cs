@@ -29,7 +29,10 @@ public class LevelManager : MonoBehaviour
 
     public static float money = 3;
 
+    public Image fadeImage;
+
     UIController ui;
+    ScreenManager screenManager;
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +41,13 @@ public class LevelManager : MonoBehaviour
         countDown = levelDuration;
         //gameText.gameObject.SetActive(false);
         ui = GameObject.FindWithTag("UI").GetComponent<UIController>();
+        screenManager = new ScreenManager(this);
+
+        if (fadeImage != null)
+        {
+            screenManager.FadeIn(fadeImage, 1.0f);
+        }
+
         ui.SetTimerText(countDown);
         initObjectiveList();
         SetCurrentObjective();
@@ -151,7 +161,8 @@ public class LevelManager : MonoBehaviour
             AudioSource.PlayClipAtPoint(gameOverSFX, Camera.main.transform.position);
         }
 
-        Invoke("LoadCurrentLevel", 2);
+        if (fadeImage != null) { Invoke("FadeOut", 2); }
+        Invoke("LoadCurrentLevel", 6);
     }
 
     public void LevelBeat()
@@ -163,19 +174,31 @@ public class LevelManager : MonoBehaviour
             Camera.main.GetComponent<AudioSource>().pitch = 1;
             AudioSource.PlayClipAtPoint(gameWonSFX, Camera.main.transform.position);
         }
+
         if (nextLevel != "") 
         {
-            Invoke("LoadNextLevel", 2);
+            if (fadeImage != null) { Invoke("FadeOut", 2); }
+            Invoke("LoadNextLevel", 6);
         }
 
     }
 
-
-    void LoadCurrentLevel() {
+    void LoadCurrentLevel()
+    {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     void LoadNextLevel() {
         SceneManager.LoadScene(nextLevel);
+    }
+
+    void FadeOut()
+    {
+        screenManager.FadeOut(fadeImage, 1.0f);
+    }
+
+    public static void ForceLevel(string levelName)
+    {
+        SceneManager.LoadScene(levelName);
     }
 }
