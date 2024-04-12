@@ -28,6 +28,7 @@ public class MainMenu : MonoBehaviour
     public void StartGame()
     {
         screenManager.FadeOut(fadeImage, fadeTime);
+        PlayerPrefs.SetInt("Money", 3);
         // FadeOut();
         Invoke("NextScene", fadeTime + .2f);
     }

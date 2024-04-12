@@ -151,7 +151,8 @@ public class DialoguePrompt : MonoBehaviour
 
     void EnableUI(bool isEnabled)
     {
-        if (playerStatePanel)
+        GameObject playerStatePanel = GameObject.Find("PlayerStatePanel");
+        if (playerStatePanel != null)
         {
             playerStatePanel.SetActive(isEnabled);
         }

@@ -27,7 +27,7 @@ public class LevelManager : MonoBehaviour
 
     public string nextLevel;
 
-    public static float money = 3;
+    public static int money = 3;
 
     public Image fadeImage;
 
@@ -85,6 +85,7 @@ public class LevelManager : MonoBehaviour
     private void initObjectiveList()
     {
         Debug.Log("Calling initObjList!");
+        objectiveList = new List<Objective>();
         
         foreach (ObjectiveParam op in objectiveParams)
         {
@@ -185,10 +186,12 @@ public class LevelManager : MonoBehaviour
 
     void LoadCurrentLevel()
     {
+        money = PlayerPrefs.GetInt("Money", 0);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     void LoadNextLevel() {
+        PlayerPrefs.SetInt("Money", money);
         SceneManager.LoadScene(nextLevel);
     }
 

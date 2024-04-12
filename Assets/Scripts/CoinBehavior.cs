@@ -5,7 +5,7 @@ using UnityEngine;
 public class CoinBehavior : MonoBehaviour
 {
     //allows for double-value coins
-    public float scoreValue = 1f;
+    public int scoreValue = 1;
     public AudioClip pickupSFX;
     Collider collider;
     
