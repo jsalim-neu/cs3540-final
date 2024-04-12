@@ -186,11 +186,13 @@ public class LevelManager : MonoBehaviour
 
     void LoadCurrentLevel()
     {
+        //when current level is reloaded (i.e. player lost), retrieve saved money count (or default $0)
         money = PlayerPrefs.GetInt("Money", 0);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     void LoadNextLevel() {
+        //when level is beaten, save player's money count
         PlayerPrefs.SetInt("Money", money);
         SceneManager.LoadScene(nextLevel);
     }

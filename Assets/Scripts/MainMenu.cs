@@ -28,6 +28,7 @@ public class MainMenu : MonoBehaviour
     public void StartGame()
     {
         screenManager.FadeOut(fadeImage, fadeTime);
+        //every time game starts, create save data with initial money count
         PlayerPrefs.SetInt("Money", 3);
         // FadeOut();
         Invoke("NextScene", fadeTime + .2f);
