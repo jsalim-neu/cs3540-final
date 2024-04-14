@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 4031836183731681380}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.060609788, y: 0, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -148,6 +148,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToLive: 3
+  initialY: 0
+  damage: 1
+  canDamagePlayer: 0
 --- !u!96 &3051918759166803167
 TrailRenderer:
   serializedVersion: 3
@@ -252,8 +255,8 @@ TrailRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
-    textureScale: {x: 1, y: 1}
+    textureMode: 2
+    textureScale: {x: 10, y: 10}
     shadowBias: 0.5
     generateLightingData: 0
   m_MinVertexDistance: 0.1
