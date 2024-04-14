@@ -94,16 +94,19 @@ public class SkeletonFSM : EnemyFSM
             //fire bullet
             Debug.Log("Enemy firing!");
 
+            //instantiate new enemy bullet
             GameObject bulletClone = Instantiate(
               bulletPrefab,
-              gunPoint.transform.position,
+              gunPoint.transform.position + gunPoint.transform.forward,
               gunPoint.transform.rotation
             ) as GameObject;
 
-            Rigidbody rb = bulletClone.GetComponent<Rigidbody>();
 
+            //push bullet forward
+            Rigidbody rb = bulletClone.GetComponent<Rigidbody>();
             rb.AddForce(transform.forward * 5, ForceMode.VelocityChange);
 
+            //script stuff: set the bullet damage and behaviour
             BulletBehaviour b = bulletClone.GetComponent<BulletBehaviour>();
             b.canDamagePlayer = true;
             b.damage = damageAmount;
