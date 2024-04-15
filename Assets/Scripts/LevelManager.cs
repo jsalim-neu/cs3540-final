@@ -10,6 +10,8 @@ public class ObjectiveParam
     public ObjectiveType oType;
     public int oCount;
     public string oText;
+
+    public GameObject oInteractable;
 }
 public class LevelManager : MonoBehaviour
 {
@@ -79,6 +81,7 @@ public class LevelManager : MonoBehaviour
             ui.CheckSlidersActive();
             ui.SetTimerText(countDown);
             ui.SetScoreText(money);
+            ui.SetObjectiveArrow(currObjective);
         }
     }
 
@@ -95,7 +98,7 @@ public class LevelManager : MonoBehaviour
                     objectiveList.Add(new MoneyObjective(op.oCount));
                     break;
                 case ObjectiveType.INTERACTION:
-                    objectiveList.Add(new InteractObjective(op.oCount, op.oText));
+                    objectiveList.Add(new InteractObjective(op.oCount, op.oText, op.oInteractable));
                     break;
                 default:
                     break;

@@ -43,6 +43,9 @@ public abstract class Objective
     //descriptor of objective for UI
     public string objectiveText {get; set;}
 
+    public GameObject interactable {get; set;}
+
+
     //update objective count (if the event is of the correct type)
     public void ObjectiveUpdate(ObjectiveType type, int objectiveChange)
     {
@@ -70,6 +73,7 @@ public class MoneyObjective : Objective
         objectiveCounter = 0;
         objectiveCountGoal = goalMoney;
         objectiveText = "";
+        interactable = null;
     }
 
     //if money is gained, increase objective count by that number
@@ -79,8 +83,7 @@ public class MoneyObjective : Objective
 
 //objective involving interacting with something in the game world
 public class InteractObjective : Objective
-{
-    
+{    
     //constructor with single interactable
     public InteractObjective()
     {
@@ -88,6 +91,7 @@ public class InteractObjective : Objective
         objectiveCounter = 0;
         objectiveCountGoal = 1;
         objectiveText = "";
+        interactable = null;
     }
 
     //constructor with multiple interactables
@@ -97,7 +101,16 @@ public class InteractObjective : Objective
         objectiveCounter = 0;
         objectiveCountGoal = goal;
         objectiveText = text;
+        interactable = null;
     }
 
+    public InteractObjective(int goal, string text, GameObject inspectorInteractable)
+    {
+        objType = ObjectiveType.INTERACTION;
+        objectiveCounter = 0;
+        objectiveCountGoal = goal;
+        objectiveText = text;
+        interactable = inspectorInteractable;
+    }
 
 }

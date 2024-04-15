@@ -17,16 +17,19 @@ public class UIController : MonoBehaviour
 {
     public Text timerText, scoreText, gameText;
 
-    public Image messagePanel;
+    public Image messagePanel, objectivePanel;
 
 
     public Slider reloadSlider, dashSlider, homingSlider, grenadeSlider, pulseSlider;
 
     Slider currSlider;
 
+    GameObject player;
+
     // Start is called before the first frame update
     void Start()
     {
+        player = GameObject.FindWithTag("Player");
     }
 
     // Update is called once per frame
@@ -79,5 +82,26 @@ public class UIController : MonoBehaviour
         homingSlider.gameObject.SetActive(FlagManager.playerHasHoming);
         grenadeSlider.gameObject.SetActive(FlagManager.playerHasGrenades);
         pulseSlider.gameObject.SetActive(FlagManager.playerHasPulse);
+    }
+
+    public void SetObjectiveArrow(Objective obj)
+    {
+        if (obj.objType != ObjectiveType.INTERACTION || obj.interactable == null)
+        {
+            objectivePanel.gameObject.SetActive(false);
+        }
+        else
+        {
+            objectivePanel.gameObject.SetActive(true);
+            objectivePanel.transform.eulerAngles = new Vector3(
+                90f, 
+                0f, 
+                -Vector3.SignedAngle(
+                    transform.forward, 
+                    (obj.interactable.transform.position - player.transform.position),
+                    Vector3.up
+                    )
+                );
+        }
     }
 }
