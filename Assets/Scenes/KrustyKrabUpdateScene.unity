@@ -16676,6 +16676,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 32878997254255330, guid: f5fe19fd94412a74fa2ee7f35e81f8f3, type: 3}
+      propertyPath: nextLevel
+      value: Outside 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 32878997254255330, guid: f5fe19fd94412a74fa2ee7f35e81f8f3, type: 3}
       propertyPath: gameWonSFX
       value: 
       objectReference: {fileID: 8300000, guid: 74b499c1ae6a2f14ba8af50154c23842, type: 3}
@@ -22412,6 +22416,10 @@ PrefabInstance:
     - target: {fileID: 366565573793415508, guid: c7eadbda9dad24ce6880d6293fcec553, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3576153603998050422, guid: c7eadbda9dad24ce6880d6293fcec553, type: 3}
+      propertyPath: m_Intensity
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5044443593243993860, guid: c7eadbda9dad24ce6880d6293fcec553, type: 3}
       propertyPath: m_Name
