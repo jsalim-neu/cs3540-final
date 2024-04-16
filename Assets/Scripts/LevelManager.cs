@@ -81,8 +81,9 @@ public class LevelManager : MonoBehaviour
             ui.CheckSlidersActive();
             ui.SetTimerText(countDown);
             ui.SetScoreText(money);
-            ui.SetObjectiveArrow(currObjective);
         }
+        ui.SetObjectiveArrow(currObjective);
+
     }
 
     private void initObjectiveList()

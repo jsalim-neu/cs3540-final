@@ -86,7 +86,9 @@ public class UIController : MonoBehaviour
 
     public void SetObjectiveArrow(Objective obj)
     {
-        if (obj.objType != ObjectiveType.INTERACTION || obj.interactable == null)
+        if (obj.objType != ObjectiveType.INTERACTION 
+            || obj.interactable == null
+            || LevelManager.isGameOver)
         {
             objectivePanel.gameObject.SetActive(false);
         }
