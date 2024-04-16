@@ -23,36 +23,45 @@ public class PlayerAnimation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //check whether player is moving
-        if (moveDirection == Vector3.zero)
+        if (!LevelManager.isGameOver)
         {
+            //check whether player is moving
+            if (moveDirection == Vector3.zero)
+            {
+                anim.SetBool("isMoving", false);
+            }
+            else 
+            {
+                anim.SetBool("isMoving", true);
+            }
+
+            //check whether player is running
+            anim.SetBool("isRunning", isRunning);
+
+            //compare angle between movement direction and player rotation
+            float dot = Vector3.Dot(moveDirection, playerRotation);
+            //Debug.Log(moveDirection + "; " + playerRotation + "; " + dot);
+            if (dot > 0)
+            {
+                orientationNum = 8;
+            }
+            else if (dot < 0)
+            {
+                orientationNum = 2;
+            }
+            else 
+            {
+                orientationNum = 5; //meaningless
+            }
+            //set movement direction
+            anim.SetInteger("moveDirection", orientationNum);
+        }
+        else 
+        {
+            //if game is over, player cannot be moving
             anim.SetBool("isMoving", false);
         }
-        else 
-        {
-            anim.SetBool("isMoving", true);
-        }
-
-        //check whether player is running
-        anim.SetBool("isRunning", isRunning);
-
-        //compare angle between movement direction and player rotation
-        float dot = Vector3.Dot(moveDirection, playerRotation);
-        //Debug.Log(moveDirection + "; " + playerRotation + "; " + dot);
-        if (dot > 0)
-        {
-            orientationNum = 8;
-        }
-        else if (dot < 0)
-        {
-            orientationNum = 2;
-        }
-        else 
-        {
-            orientationNum = 5; //meaningless
-        }
-        //set movement direction
-        anim.SetInteger("moveDirection", orientationNum);
+        
 
     }
 
