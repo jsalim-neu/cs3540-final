@@ -2920,10 +2920,10 @@ MonoBehaviour:
   damageAmount: 1
   detectRange: 15
   enemyHealth: {fileID: 0}
-  fov: 45
+  fov: 90
   gunPoint: {fileID: 2304879042981968738}
   bulletPrefab: {fileID: 4031836183731681380, guid: e5252a4c475f04df2b41bc0dd46fd111, type: 3}
-  bulletCooldown: 1
+  bulletCooldown: 0.75
   bulletRefresh: 0
   shootRange: 7.5
 --- !u!114 &6711097782152177120
@@ -2938,8 +2938,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa92c56513ff2c94fbd5042ad8d4f9af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hurtSFX: {fileID: 8300000, guid: 16fa70d010567314eb34898afe40bc49, type: 3}
-  deathSFX: {fileID: 8300000, guid: 38c4a9664cadc7c488f3caec459d8a7d, type: 3}
+  anim: {fileID: 5119136628566344407}
+  hurtSFX: {fileID: 8300000, guid: fd4e2b15aad593e4f9fb75cad12c8b52, type: 3}
+  deathSFX: {fileID: 8300000, guid: 4340d37375b8915498da80de0c358cc5, type: 3}
   healthSlider: {fileID: 6629092467780733823}
   isGettingHit: 0
   isDead: 0
@@ -4413,6 +4414,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1698847435588449799}
     m_Modifications:
+    - target: {fileID: 844460338018496125, guid: 569adc4572d7b544589fc01028ed5334, type: 3}
+      propertyPath: m_MaxValue
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3255446448781576403, guid: 569adc4572d7b544589fc01028ed5334, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 1

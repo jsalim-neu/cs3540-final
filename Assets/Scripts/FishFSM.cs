@@ -15,7 +15,11 @@ public class FishFSM : EnemyFSM
     
     public override void EnemyUpdate()
     {
-        if (collisionTimer <= 0 & !enemyHealth.isDead)
+        if (LevelManager.isGameOver)
+        {
+            currentState = FSMStates.Idle;
+        }
+        if (collisionTimer <= 0 & !enemyHealth.isDead & !LevelManager.isGameOver)
         {
             triggerCollider.enabled = true;
         }
@@ -23,8 +27,6 @@ public class FishFSM : EnemyFSM
         {
             collisionTimer -= Time.deltaTime;
         }
-
-        FishLookAt();
     }
 
     public override void Initialize()
@@ -38,7 +40,7 @@ public class FishFSM : EnemyFSM
 
     public override void UpdateIdleState()
     {
-
+        agent.speed = 0;
     }
 
     public override void UpdatePatrolState()
@@ -47,7 +49,7 @@ public class FishFSM : EnemyFSM
         agent.speed = moveSpeed;
 
         //if enemy successfully wanders around, find new random destination
-        if (agent.remainingDistance < 0.5f)
+        if (agent.remainingDistance < 0.02f)
         {
             base.WanderAround();
         }
@@ -65,7 +67,7 @@ public class FishFSM : EnemyFSM
         agent.stoppingDistance = 0;
         agent.SetDestination(player.position);
 
-        if (!base.IsPlayerInLOS())
+        if (!base.IsPlayerInLOS() && Vector3.Distance(player.position, transform.position) >= 8f)
         {
             currentState = FSMStates.Patrol;
         }
@@ -86,12 +88,7 @@ public class FishFSM : EnemyFSM
         if (other.CompareTag("Player"))
         {
             DamagePlayer(other);
-            if (enemyHealth.isGettingHit)
-            {
-                FishLookAt();
-                transform.LookAt(player.position);
-
-            }
+            currentState = FSMStates.Chase;
             //if 
             if (collisionTimer <= 0 & !enemyHealth.isDead)
             {
@@ -136,12 +133,12 @@ public class FishFSM : EnemyFSM
         //Gizmos.DrawWireSphere(transform.position, chaseDistance);
 
         Vector3 frontRayPoint = enemyEyes.position + (enemyEyes.forward * detectRange);
-        Vector3 leftRayPoint = Quaternion.Euler(0, fov * 0.5f, 0) * frontRayPoint;
-        Vector3 rightRayPoint = Quaternion.Euler(0, -fov * 0.5f, 0) * frontRayPoint;
+        Vector3 leftRayPoint = Quaternion.AngleAxis(fov * 0.5f, Vector3.up) * frontRayPoint;
+        Vector3 rightRayPoint = Quaternion.AngleAxis(-fov * 0.5f, Vector3.up) * frontRayPoint;
 
         Debug.DrawLine(enemyEyes.position, frontRayPoint, Color.red);
         Debug.DrawLine(enemyEyes.position, leftRayPoint, Color.yellow);
-        Debug.DrawLine(enemyEyes.position, rightRayPoint, Color.yellow);
+        Debug.DrawLine(enemyEyes.position, rightRayPoint, Color.green);
 
     }
 }

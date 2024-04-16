@@ -89,7 +89,8 @@ public class SkeletonFSM : EnemyFSM
     }
     public override void UpdateDeadState()
     {
-        
+        agent.isStopped = true;
+        anim.SetInteger("animState", 4);
     }
 
     void FireBullet()

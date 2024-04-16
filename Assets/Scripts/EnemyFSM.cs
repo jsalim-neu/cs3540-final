@@ -2,6 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+
+public enum FSMStates 
+    {
+        Idle,
+        Patrol,
+        Chase,
+        Attack,
+        Dead
+    }
 public abstract class EnemyFSM : MonoBehaviour
 {
     /*
@@ -26,14 +35,7 @@ public abstract class EnemyFSM : MonoBehaviour
 
     //FSM variables
 
-    public enum FSMStates 
-    {
-        Idle,
-        Patrol,
-        Chase,
-        Attack,
-        Dead
-    }
+    
 
     public FSMStates currentState;
 
