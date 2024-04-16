@@ -10,7 +10,11 @@ public class BulletBehaviour : MonoBehaviour
     //initial height of the bullet, used for height correction of both the bullet and enemies
     public float initialY;
 
-    public float damage = 1;
+    public int damage = 1;
+
+    public bool canDamagePlayer = false;
+
+    public GameObject sparksPrefab;
 
     void Start()
     {
@@ -39,15 +43,30 @@ public class BulletBehaviour : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        //bullet destroys itself if it hits an enemy, deactivates otherwise
-        if (collision.gameObject.tag == "Enemy")
+        //destroy bullet if it hits target, deactivate if it hits a non-target entity that ISN'T what fired it
+        if (canDamagePlayer && !LevelManager.isGameOver)
         {
-            Destroy(gameObject);
+            //fired by enemy
+            if (collision.gameObject.tag == "Player")
+            {
+                collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(damage);
+            }
+            if (collision.gameObject.tag != "Enemy")
+            {
+                Destroy(gameObject);
+            }
         }
-        else if (collision.gameObject.tag != "Player")
+        else
         {
-            gameObject.SetActive(false);
-            //instantiate spark particle effect?
+            //fired by player
+            if (collision.gameObject.tag == "Enemy")
+            {
+                Destroy(gameObject);
+            }
+            else if (collision.gameObject.tag != "Player")
+            {
+                gameObject.SetActive(false);
+            }
         }
         
     }
@@ -65,6 +84,18 @@ public class BulletBehaviour : MonoBehaviour
             //instantiate spark particle effect?
         }
         
+    }
+
+    void OnDestroy()
+    {
+        //add particle effect for bullet hit
+        if (sparksPrefab != null)
+        {
+            GameObject sparks = Instantiate(sparksPrefab, transform.position, Quaternion.identity);
+            sparks.transform.SetParent(
+                GameObject.FindGameObjectWithTag("ParticleParent").transform
+            );
+        }
     }
 
 }

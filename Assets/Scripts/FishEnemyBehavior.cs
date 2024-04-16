@@ -7,7 +7,7 @@ public class FishEnemyBehavior : MonoBehaviour
 {
 
     //movement, player detection vars
-    public AudioClip playerHitSFX;
+    //public AudioClip playerHitSFX;
     public Transform player;
     public float moveSpeed = 5f;
     public int damageAmount = 1;
@@ -64,7 +64,8 @@ public class FishEnemyBehavior : MonoBehaviour
             {
                 triggerCollider.enabled = true;
             }
-            else {
+            else
+            {
                 collisionTimer -= Time.deltaTime;
             }
         }
@@ -92,7 +93,6 @@ public class FishEnemyBehavior : MonoBehaviour
         }
     }
 
-
     void FollowPlayer() {
         // handle navmesh agent
         agent.speed = moveSpeed;
@@ -109,7 +109,7 @@ public class FishEnemyBehavior : MonoBehaviour
         Vector3 moveDirection = (other.gameObject.transform.position - transform.position).normalized;
         playerHealth.TriggerKnockback(moveDirection);
 
-        AudioSource.PlayClipAtPoint(playerHitSFX, Camera.main.transform.position);
+        //AudioSource.PlayClipAtPoint(playerHitSFX, Camera.main.transform.position);
 
         //deactivate player harming capabilities
         triggerCollider.enabled = false;

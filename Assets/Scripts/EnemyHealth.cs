@@ -5,8 +5,12 @@ using UnityEngine.UI;
 
 public class EnemyHealth : MonoBehaviour
 {
+    public Animator anim;
+    
     public AudioClip hurtSFX, deathSFX;
     public Slider healthSlider;
+
+    EnemyFSM fsm;
 
     UnityEngine.AI.NavMeshAgent agent;
 
@@ -38,6 +42,7 @@ public class EnemyHealth : MonoBehaviour
         itemParent = GameObject.FindGameObjectWithTag("PickupParent");
         enemyHUD_Transform = transform.GetChild(0);
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        fsm = GetComponent<EnemyFSM>();
 
 
         isDead = false;
@@ -91,7 +96,7 @@ public class EnemyHealth : MonoBehaviour
         else
         {
             //play hit animation
-            gameObject.GetComponent<Animator>().SetTrigger("fishHit");
+            anim.SetTrigger("fishHit");
             
         }
         yield return new WaitForSeconds(0.3f);
@@ -114,7 +119,8 @@ public class EnemyHealth : MonoBehaviour
             deathSFX,
             Camera.main.transform.position
         );
-        gameObject.GetComponent<Animator>().SetTrigger("fishDead");
+        fsm.currentState = FSMStates.Dead;
+        anim.SetTrigger("fishDead");
 
         //check whether item (e.g. coin) is dropped
         System.Random r = new System.Random();
@@ -122,7 +128,7 @@ public class EnemyHealth : MonoBehaviour
         {
             DropItem();
         }
-        Destroy(gameObject, 0.75f);
+        Destroy(gameObject, 1.25f);
 
 
     }
