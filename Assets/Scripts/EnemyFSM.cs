@@ -99,7 +99,11 @@ public abstract class EnemyFSM : MonoBehaviour
                 UpdateDeadState();
                 break;
         }
+
+        EnemyUpdate();
     }
+
+    public abstract void EnemyUpdate();
 
     public abstract void UpdateIdleState();
     public abstract void UpdatePatrolState();

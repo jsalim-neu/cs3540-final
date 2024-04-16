@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &175267095359718962
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 724166547136288621}
+  m_Layer: 0
+  m_Name: EnemyEyes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &724166547136288621
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175267095359718962}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.361, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6961854119965240234}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7770584863604633872
 GameObject:
   m_ObjectHideFlags: 0
@@ -11,13 +42,13 @@ GameObject:
   - component: {fileID: 6961854119965240234}
   - component: {fileID: 6283263626917782543}
   - component: {fileID: 8130780406338408645}
-  - component: {fileID: -7829044220159873241}
   - component: {fileID: 741178466077394306}
   - component: {fileID: -1753965184321888094}
   - component: {fileID: 8898627255084317729}
   - component: {fileID: 1773514733718241131}
   - component: {fileID: -6062395542626542939}
   - component: {fileID: -1362318880001634553}
+  - component: {fileID: 3402063373921133327}
   m_Layer: 0
   m_Name: FishEnemy
   m_TagString: Enemy
@@ -39,6 +70,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2222163771266739331}
+  - {fileID: 724166547136288621}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6283263626917782543
@@ -91,24 +123,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &-7829044220159873241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7770584863604633872}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d76ccb379309c0a41bb8cb16e2fa9f28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerHitSFX: {fileID: 8300000, guid: 39b65091f508052439d976ea7d1509ab, type: 3}
-  player: {fileID: 0}
-  moveSpeed: 5
-  damageAmount: 1
-  detectionRadius: 10
-  enemyHealth: {fileID: 0}
 --- !u!95 &741178466077394306
 Animator:
   serializedVersion: 5
@@ -241,6 +255,29 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 0.5, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3402063373921133327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7770584863604633872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 462e61549b2ba6f4cb34ba19b2a83d8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentState: 0
+  enemyEyes: {fileID: 724166547136288621}
+  playerHitSFX: {fileID: 8300000, guid: 73165ae2b5990c74d8a08e3b79b787b4, type: 3}
+  player: {fileID: 0}
+  moveSpeed: 5
+  wanderDistance: 10
+  damageAmount: 1
+  detectRange: 15
+  enemyHealth: {fileID: 0}
+  fov: 45
+  collisionCooldown: 0.5
 --- !u!1001 &7742975603537332397
 PrefabInstance:
   m_ObjectHideFlags: 0

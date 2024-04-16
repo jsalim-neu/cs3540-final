@@ -27,6 +27,11 @@ public class SkeletonFSM : EnemyFSM
         runSpeed = moveSpeed * 1.25f;
     }
 
+    public override void EnemyUpdate()
+    {
+
+    }
+
     public override void UpdateIdleState()
     {
 
