@@ -92699,6 +92699,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 32878997254255330, guid: f5fe19fd94412a74fa2ee7f35e81f8f3, type: 3}
+      propertyPath: nextLevel
+      value: _GameOver
+      objectReference: {fileID: 0}
+    - target: {fileID: 32878997254255330, guid: f5fe19fd94412a74fa2ee7f35e81f8f3, type: 3}
       propertyPath: objectiveParams.Array.size
       value: 2
       objectReference: {fileID: 0}
