@@ -15,6 +15,8 @@ public class ObjectiveParam
 }
 public class LevelManager : MonoBehaviour
 {
+    public static float cameraHeight = 14;
+
     public ObjectiveParam[] objectiveParams;
 
     static List<Objective> objectiveList = new List<Objective>();
