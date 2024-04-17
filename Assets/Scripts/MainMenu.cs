@@ -10,6 +10,10 @@ public class MainMenu : MonoBehaviour
     float fadeTime = 2.0f;
     float currentTime = 0.0f;
 
+    public GameObject optionsMenu;
+
+    public Slider cameraSlider;
+
     ScreenManager screenManager; // constructor for ScreenManager takes in a MonoBehaviour as a parameter
 
     void Start()
@@ -32,6 +36,31 @@ public class MainMenu : MonoBehaviour
         PlayerPrefs.SetInt("Money", 3);
         // FadeOut();
         Invoke("NextScene", fadeTime + .2f);
+    }
+
+    public void OpenPanel(GameObject panel)
+    {
+        panel.SetActive(true);
+    }
+
+    public void ClosePanel(GameObject panel)
+    {
+        panel.SetActive(false);
+    }
+    public void OptionsMenu()
+    {
+        optionsMenu.SetActive(true);
+    }
+
+    public void SetCameraHeight()
+    {
+        LevelManager.cameraHeight = cameraSlider.value;
+    }
+
+
+    public void CloseOptions()
+    {
+        optionsMenu.SetActive(false);
     }
 
     void NextScene()
