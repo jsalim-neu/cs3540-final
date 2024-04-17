@@ -22,10 +22,10 @@ public class CreditsSelection : MonoBehaviour
 
     Dictionary<string, string> developerCredits = new Dictionary<string, string>
     {
-        { "Damian", "Damian: Developer" },
-        { "Justin", "Justin: Developer" },
-        { "Andrew", "Andrew: Developer" },
-        { "Dante", "Dante: Developer" }
+        { "Damian", "Damian Uduevbo: \nDeveloper \n3rd year Computer Science Major" },
+        { "Justin", "Justin Salim: \nDeveloper \n4th year Data Science/Behavioral Neuroscience Major" },
+        { "Andrew", "Andrew Gyongyosi: \nDeveloper \n5th year Finance Major" },
+        { "Dante", "Dante Kronland Justen de Oliveira: \nDeveloper \n4th year Computer Science and Game Development Major" }
     };
 
     void Start()
