@@ -7,9 +7,9 @@ public class FlagManager : MonoBehaviour
 {
     public static bool 
         spawnEnemies = false,
-        playerHasGrenades = true,
+        playerHasGrenades = false,
         playerHasPulse = false,
-        playerHasHoming = true
+        playerHasHoming = false
         ;
         
     // Start is called before the first frame update
