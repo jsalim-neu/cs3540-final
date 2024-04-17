@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DialogueScript : MonoBehaviour
 {
+    //put dialogue here through the inspector
     public string[] dialogue;
     public bool isComplete = false;
     private int index = 0;

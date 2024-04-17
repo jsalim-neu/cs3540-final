@@ -21,6 +21,10 @@ public class FishEnemyBehavior : MonoBehaviour
 
     NavMeshAgent agent;
 
+    //set cooldown for attacking player to prevent double-taps and corner combos; 
+    //trigger collider is used to hurt player and thus will be deactivated for a short time afterward
+    Collider triggerCollider; public float collisionCooldown = 0.5f; float collisionTimer = 0;
+
     void Start()
     {
         if (player == null)
@@ -30,6 +34,7 @@ public class FishEnemyBehavior : MonoBehaviour
         isAggro = false;
 
         enemyHealth = GetComponent<EnemyHealth>();
+        triggerCollider = GetComponents<Collider>()[1];
 
         agent = GetComponent<NavMeshAgent>();
         agent.stoppingDistance = 0;
@@ -53,8 +58,14 @@ public class FishEnemyBehavior : MonoBehaviour
             if (isAggro && !enemyHealth.isGettingHit && !enemyHealth.isDead) {
                 FollowPlayer();
             }
-            if (enemyHealth.isGettingHit) {
-                fishLookAt();
+            fishLookAt();
+            //if 
+            if (collisionTimer <= 0 & !enemyHealth.isDead)
+            {
+                triggerCollider.enabled = true;
+            }
+            else {
+                collisionTimer -= Time.deltaTime;
             }
         }
         else {
@@ -67,46 +78,42 @@ public class FishEnemyBehavior : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             DamagePlayer(other);
+            if (enemyHealth.isGettingHit) {
+                fishLookAt();
+            }
+            //if 
+            if (collisionTimer <= 0 & !enemyHealth.isDead)
+            {
+                triggerCollider.enabled = true;
+            }
+            else {
+                collisionTimer -= Time.deltaTime;
+            }
         }
     }
+
 
     void FollowPlayer() {
         // handle navmesh agent
         agent.speed = moveSpeed;
         agent.SetDestination(player.position);
 
-        //swim towards player
-        /*Vector3 newPosition = Vector3.MoveTowards(
-            transform.position,
-            player.position,
-            moveSpeed * Time.deltaTime
-        ); */
-
-        // turn to face player
-        fishLookAt();
-
-        //correct y-position
-        transform.position = new Vector3(transform.position.x, bulletHeight, transform.position.z);
-
-        //transform.position = newPosition;
     }
 
     void DamagePlayer(Collider other)
     {
         var playerHealth = other.GetComponent<PlayerHealth>();
         playerHealth.TakeDamage(damageAmount);
-        var playerController = other.GetComponent<PlayerController>();
-        
+
+        //knockback wrapper is handled in PlayerHealth, which calls a function in PlayerController
         Vector3 moveDirection = (other.gameObject.transform.position - transform.position).normalized;
+        playerHealth.TriggerKnockback(moveDirection);
 
         AudioSource.PlayClipAtPoint(playerHitSFX, Camera.main.transform.position);
 
-        float knockbackTimer = 0.75f;
-        while (knockbackTimer >= 0)
-        {
-            playerController.controller.Move(moveDirection * Time.deltaTime * 5);
-            knockbackTimer -= Time.deltaTime;
-        }
+        //deactivate player harming capabilities
+        triggerCollider.enabled = false;
+        collisionTimer = collisionCooldown;        
     }
 
     private void fishLookAt()
