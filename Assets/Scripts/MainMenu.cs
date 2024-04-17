@@ -32,6 +32,16 @@ public class MainMenu : MonoBehaviour
         Invoke("NextScene", fadeTime + .2f);
     }
 
+    public void OpenPanel(GameObject panel)
+    {
+        panel.SetActive(true);
+    }
+
+    public void ClosePanel(GameObject panel)
+    {
+        panel.SetActive(false);
+    }
+
     void NextScene()
     {
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
