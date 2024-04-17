@@ -26,6 +26,9 @@ public class DialoguePrompt : MonoBehaviour
     //refers to the "next" dialogue object in the level, makes it interactable if so 
     public GameObject nextDialogueObject;
 
+    GameObject playerStatePanel;
+
+
     public enum InteractableEnityType
     {
         NPC,
@@ -51,6 +54,8 @@ public class DialoguePrompt : MonoBehaviour
         {
             entityBehaviour = GetComponent<EntityBehaviour>();
         }
+
+        playerStatePanel = GameObject.Find("PlayerStatePanel");
 
     }
 
@@ -138,10 +143,10 @@ public class DialoguePrompt : MonoBehaviour
     void ExitDialogue()
     {
         Time.timeScale = 1;
+        EnableUI(true);
         dialoguePopUp.gameObject.SetActive(false);
         dialogueScript.ResetDialogue();
         isDialogueRunning = false;
-        EnableUI(true);
 
         if (nextDialogueObject != null)
         {
@@ -151,9 +156,6 @@ public class DialoguePrompt : MonoBehaviour
 
     void EnableUI(bool isEnabled)
     {
-        if (playerStatePanel)
-        {
-            playerStatePanel.SetActive(isEnabled);
-        }
+        playerStatePanel.SetActive(isEnabled);
     }
 }

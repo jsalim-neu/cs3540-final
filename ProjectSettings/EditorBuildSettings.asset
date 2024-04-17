@@ -14,7 +14,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/KrustyKrabUpdateScene.unity
     guid: bc811fcdf02421d428eca27684c212da
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/In the Krab.unity
     guid: 61af849e85bab524a9744f128bd3a537
+  - enabled: 1
+    path: Assets/Scenes/Outside 2.unity
+    guid: b3f512919eff346478adbedf9bea0ca9
+  - enabled: 1
+    path: Assets/Scenes/Inside Pats House.unity
+    guid: c814bf9f5dcd96d469203b5d59fbb9ed
   m_configObjects: {}

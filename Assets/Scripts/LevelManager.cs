@@ -10,6 +10,8 @@ public class ObjectiveParam
     public ObjectiveType oType;
     public int oCount;
     public string oText;
+
+    public GameObject oInteractable;
 }
 public class LevelManager : MonoBehaviour
 {
@@ -27,7 +29,7 @@ public class LevelManager : MonoBehaviour
 
     public string nextLevel;
 
-    public static float money = 3;
+    public static int money = 3;
 
     public Image fadeImage;
 
@@ -80,11 +82,14 @@ public class LevelManager : MonoBehaviour
             ui.SetTimerText(countDown);
             ui.SetScoreText(money);
         }
+        ui.SetObjectiveArrow(currObjective);
+
     }
 
     private void initObjectiveList()
     {
         Debug.Log("Calling initObjList!");
+        objectiveList = new List<Objective>();
         
         foreach (ObjectiveParam op in objectiveParams)
         {
@@ -94,7 +99,7 @@ public class LevelManager : MonoBehaviour
                     objectiveList.Add(new MoneyObjective(op.oCount));
                     break;
                 case ObjectiveType.INTERACTION:
-                    objectiveList.Add(new InteractObjective(op.oCount, op.oText));
+                    objectiveList.Add(new InteractObjective(op.oCount, op.oText, op.oInteractable));
                     break;
                 default:
                     break;
@@ -185,10 +190,14 @@ public class LevelManager : MonoBehaviour
 
     void LoadCurrentLevel()
     {
+        //when current level is reloaded (i.e. player lost), retrieve saved money count (or default $0)
+        money = PlayerPrefs.GetInt("Money", 0);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     void LoadNextLevel() {
+        //when level is beaten, save player's money count
+        PlayerPrefs.SetInt("Money", money);
         SceneManager.LoadScene(nextLevel);
     }
 
