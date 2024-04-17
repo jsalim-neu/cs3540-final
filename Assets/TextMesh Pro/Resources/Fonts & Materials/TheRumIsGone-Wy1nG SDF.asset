@@ -2608,7 +2608,6 @@ MonoBehaviour:
           m_YPlacement: 0
           m_XAdvance: -27
           m_YAdvance: 0
-      m_SecondAdjustmentRecord:
         m_GlyphIndex: 39
         m_GlyphValueRecord:
           m_XPlacement: 0
@@ -2622,8 +2621,6 @@ MonoBehaviour:
           m_XPlacement: 0
           m_YPlacement: 0
           m_XAdvance: -38.703125
-          m_YAdvance: 0
-      m_SecondAdjustmentRecord:
         m_GlyphIndex: 81
         m_GlyphValueRecord:
           m_XPlacement: 0
